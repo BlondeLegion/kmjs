@@ -1,0 +1,42 @@
+# Source files (only dist/ should be included)
+src/
+tests/
+examples/
+scripts/
+backup/
+coverage/
+
+# Development files
+.kiro/
+.vscode/
+.github/chatmodes/
+.git/
+*.spec.ts
+*.test.ts
+vitest.config.ts
+tsconfig.json
+rollup.config.js
+.tests/integration/failures/
+.editorconfig
+.prettierignore
+.eslintrc.*
+.gitignore
+.gitattributes
+.yarnrc.yml
+
+# Logs and temporary files
+*.log
+.DS_Store
+node_modules/
+.yarn/
+yarn-error.log
+yarn.lock
+
+# LLM/Context7 files (for development/context platforms, not end users)
+context7.json
+llms.txt
+tools.json
+PROMPTS.md
+PUBLISHING.md
+
+# Keep README.md, LICENSE, and CHANGELOG.md for the package

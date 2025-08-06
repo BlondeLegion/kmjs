@@ -1,0 +1,26 @@
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+.DS_Store
+node_modules
+dist/
+coverage
+coverage/*
+backup
+.
+../../tests/integration/failures
+../../tests/integration/failures/*
+*/tests/integration/failures
+*/tests/integration/failures/*
+tests/integration/failures
+tests/integration/failures/*
+*.log
+
+# Development/internal files - not for public release
+DOCUMENTATION_CHECKLIST.md
+.kiro/
+.github/chatmodes/

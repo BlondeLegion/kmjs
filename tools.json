@@ -1,0 +1,1791 @@
+{
+  "tools": [
+    {
+      "name": "createVirtualNotification",
+      "description": "Display a system notification with title, optional subtitle, body text, and optional sound",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The notification title"
+          },
+          "subtitle": {
+            "type": "string",
+            "description": "Optional notification subtitle"
+          },
+          "body": {
+            "type": "string",
+            "description": "Notification body text"
+          },
+          "sound": {
+            "type": "string",
+            "description": "Optional system sound name (e.g., 'Glass', 'Ping', 'Basso') or path to custom sound file"
+          },
+          "titleTokenPreset": {
+            "type": "string",
+            "description": "Token preset for title (overrides title if provided)"
+          },
+          "subtitleTokenPreset": {
+            "type": "string",
+            "description": "Token preset for subtitle (overrides subtitle if provided)"
+          },
+          "bodyTokenPreset": {
+            "type": "string",
+            "description": "Token preset for body (overrides body if provided)"
+          }
+        },
+        "required": ["title", "body"]
+      }
+    },
+    {
+      "name": "createVirtualTypeKeystroke",
+      "description": "Type text or simulate key combinations with advanced press options",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "keystroke": {
+            "type": ["string", "object", "number"],
+            "description": "Keystroke to simulate. Can be a shortcut string (e.g., 'Cmd+S'), mask→key map object, or keycode number"
+          },
+          "pressAndHold": {
+            "type": "boolean",
+            "description": "Whether to hold the key down (default: false)"
+          },
+          "pressAndRepeat": {
+            "type": "boolean",
+            "description": "Whether to press and repeat (default: false, cannot be combined with pressAndHold or holdTime)"
+          },
+          "holdTime": {
+            "type": "number",
+            "description": "Duration to hold key in seconds (implies pressAndHold=true)"
+          }
+        },
+        "required": ["keystroke"]
+      }
+    },
+    {
+      "name": "createVirtualActivate",
+      "description": "Activate an application (frontmost or specific) with advanced options for window handling and behavior",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "enum": ["Front", "Specific"],
+            "description": "Activate the frontmost app or a specific one (default: Front)"
+          },
+          "specific": {
+            "type": "object",
+            "description": "App identification options when target is 'Specific'",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Application name"
+              },
+              "bundleIdentifier": {
+                "type": "string",
+                "description": "Application bundle identifier"
+              },
+              "path": {
+                "type": "string",
+                "description": "Application path"
+              },
+              "match": {
+                "type": "string",
+                "description": "Match criteria"
+              },
+              "newFile": {
+                "type": "string",
+                "description": "New file option"
+              }
+            }
+          },
+          "allWindows": {
+            "type": "boolean",
+            "description": "Activate all windows of the application (default: false)"
+          },
+          "reopenWindows": {
+            "type": "boolean",
+            "description": "Reopen initial windows (default: false)"
+          },
+          "alreadyActivatedAction": {
+            "type": "string",
+            "enum": [
+              "Normal",
+              "SwitchToLast",
+              "BringAllWindows",
+              "Reopen",
+              "Hide",
+              "HideOthers",
+              "Quit"
+            ],
+            "description": "Behavior if app is already frontmost (default: Normal)"
+          },
+          "timeoutAborts": {
+            "type": "boolean",
+            "description": "Whether timeout aborts the macro (default: true)"
+          }
+        }
+      }
+    },
+    {
+      "name": "createVirtualSetVariable",
+      "description": "Set a Keyboard Maestro variable with comprehensive options for processing, positioning, and scope",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "variable": {
+            "type": "string",
+            "description": "Name of the variable to set"
+          },
+          "text": {
+            "type": "string",
+            "description": "Value to set the variable to"
+          },
+          "processingMode": {
+            "type": "string",
+            "enum": ["TextTokensOnly", "Nothing"],
+            "description": "Processing mode for the text"
+          },
+          "where": {
+            "type": "string",
+            "description": "Where to set/append/prepend the value"
+          },
+          "presetMode": {
+            "type": "string",
+            "description": "Preset mode for convenience: 'delete', 'positionCursor', or any KM token key"
+          },
+          "scope": {
+            "type": "string",
+            "enum": ["global", "local", "instance"],
+            "description": "Variable scope (default: global). Convenience feature that prepends LOCAL/INSTANCE to variable name"
+          }
+        },
+        "required": ["variable"]
+      }
+    },
+    {
+      "name": "createVirtualSetVariableToCalculation",
+      "description": "Set a Keyboard Maestro variable to the result of a calculation with optional number formatting",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "variable": {
+            "type": "string",
+            "description": "Name of the variable to set"
+          },
+          "text": {
+            "type": "string",
+            "description": "The calculation expression (as text)"
+          },
+          "format": {
+            "type": "string",
+            "description": "Optional number format pattern (see Appendix G: Number Format Patterns)"
+          },
+          "stopOnFailure": {
+            "type": "boolean",
+            "description": "Whether to stop macro on failure (default: true)"
+          },
+          "notifyOnFailure": {
+            "type": "boolean",
+            "description": "Whether to notify on failure (default: true)"
+          }
+        },
+        "required": ["variable", "text"]
+      }
+    },
+    {
+      "name": "createVirtualIf",
+      "description": "Execute actions conditionally based on specified conditions",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "conditions": {
+            "type": "array",
+            "description": "Array of condition objects",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ConditionType": {
+                  "type": "string",
+                  "enum": ["Variable", "Application", "Window", "Text"]
+                },
+                "Variable": {
+                  "type": "string",
+                  "description": "Variable name (for Variable conditions)"
+                },
+                "VariableConditionType": {
+                  "type": "string",
+                  "enum": ["Is", "IsNot", "Contains", "DoesNotContain"]
+                },
+                "VariableValue": {
+                  "type": "string",
+                  "description": "Value to compare against"
+                }
+              }
+            }
+          },
+          "then": {
+            "type": "array",
+            "description": "Actions to execute if condition is true"
+          },
+          "else": {
+            "type": "array",
+            "description": "Optional actions to execute if condition is false"
+          },
+          "match": {
+            "type": "string",
+            "enum": ["All", "Any", "None"],
+            "description": "How to evaluate the list of conditions (default: All)"
+          },
+          "timeoutAborts": {
+            "type": "boolean",
+            "description": "Whether a timeout in a nested action should abort the whole macro (default: true)"
+          }
+        },
+        "required": ["conditions", "then"]
+      }
+    },
+    {
+      "name": "createVirtualPause",
+      "description": "Pause macro execution for specified time with configurable units",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "time": {
+            "type": "number",
+            "description": "Duration to pause (default: 0.05 if omitted)"
+          },
+          "unit": {
+            "type": "string",
+            "enum": ["Hours", "Minutes", "Seconds", "Hundredths"],
+            "description": "Unit for the duration (default: Seconds). Cannot be specified without time"
+          }
+        }
+      }
+    },
+    {
+      "name": "createVirtualMoveAndClick",
+      "description": "Primary mouse control function for moving cursor, clicking, and dragging elements. Essential for mouse automation workflows. Use horizontal/vertical for coordinates, relative for coordinate system (Screen/Window/Mouse/Absolute). For dragging: set mouseDrag to 'Absolute' (drag to coordinates) or 'Relative' (drag by offset), specify dragTargetX/Y. Use clickKind:'Move' to position cursor without clicking.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "horizontal": {
+            "type": "number",
+            "description": "X coordinate (default: 0)"
+          },
+          "vertical": {
+            "type": "number",
+            "description": "Y coordinate (default: 0)"
+          },
+          "relative": {
+            "type": "string",
+            "enum": ["Window", "Screen", "Mouse", "Absolute"],
+            "description": "Coordinate reference system (default: Window)"
+          },
+          "button": {
+            "type": "string",
+            "enum": ["Left", "Right", "Middle"],
+            "description": "Mouse button to click (default: Left)"
+          },
+          "clickKind": {
+            "type": "string",
+            "enum": ["Click", "DoubleClick", "RightClick", "Move"],
+            "description": "Type of click (default: Click). Use 'Move' to position cursor without clicking"
+          },
+          "clickModifiers": {
+            "type": ["string", "number", "object"],
+            "description": "Modifier keys as string, number, or object (default: 0)"
+          },
+          "relativeCorner": {
+            "type": "string",
+            "enum": [
+              "TopLeft",
+              "TopRight",
+              "BottomLeft",
+              "BottomRight",
+              "Center"
+            ],
+            "description": "Corner for relative positioning (default: TopLeft)"
+          },
+          "mouseDrag": {
+            "type": "string",
+            "enum": ["None", "Absolute", "Relative", "To", "From"],
+            "description": "Mouse drag operation (default: None). 'Absolute': drag to specific coordinates. 'Relative': drag by offset from start position"
+          },
+          "dragTargetX": {
+            "type": "number",
+            "description": "Drag target X coordinate or X offset for relative drags (default: 0)"
+          },
+          "dragTargetY": {
+            "type": "number",
+            "description": "Drag target Y coordinate or Y offset for relative drags (default: 0)"
+          },
+          "restoreMouseLocation": {
+            "type": "boolean",
+            "description": "Restore mouse position after click (default: false)"
+          }
+        }
+      }
+    },
+    {
+      "name": "createVirtualScrollWheelEvent",
+      "description": "Generate scroll wheel events with directional scrolling",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "scrollAmount": {
+            "type": ["string", "number"],
+            "description": "Amount to scroll (pixels or lines)"
+          },
+          "direction": {
+            "type": "string",
+            "enum": ["Up", "Down", "Left", "Right"],
+            "description": "Direction to scroll"
+          },
+          "stopOnFailure": {
+            "type": "boolean",
+            "description": "If true, abort macro on failure"
+          },
+          "notifyOnFailure": {
+            "type": "boolean",
+            "description": "If false, do not notify on failure"
+          },
+          "actionUID": {
+            "type": "number",
+            "description": "Optional override for ActionUID (for test parity)"
+          }
+        },
+        "required": ["scrollAmount", "direction"]
+      }
+    },
+    {
+      "name": "createVirtualComment",
+      "description": "Add a comment to the macro for documentation purposes",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title for the comment (shown in the KM editor)"
+          },
+          "text": {
+            "type": "string",
+            "description": "The comment text content"
+          },
+          "rtfContent": {
+            "type": "string",
+            "description": "Optional RTF string for styled text formatting"
+          }
+        },
+        "required": ["title", "text"]
+      }
+    },
+    {
+      "name": "createVirtualGroup",
+      "description": "Group multiple actions together for visual structure and optional timeout-abort behavior",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the group (displayed in Keyboard Maestro editor)"
+          },
+          "actions": {
+            "type": "array",
+            "description": "Array of virtual actions that belong to this group",
+            "items": {
+              "type": "object"
+            }
+          },
+          "timeOutAbortsMacro": {
+            "type": "boolean",
+            "description": "Whether the macro should abort if the group times out (default: true)"
+          }
+        },
+        "required": ["name", "actions"]
+      }
+    },
+    {
+      "name": "createVirtualCopy",
+      "description": "Copy current selection to clipboard with timeout options",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "notifyOnTimeout": {
+            "type": "boolean",
+            "description": "Whether to notify when a timeout occurs (default: true)"
+          },
+          "timeoutAborts": {
+            "type": "boolean",
+            "description": "Whether timeout aborts the macro (default: true)"
+          }
+        }
+      }
+    },
+    {
+      "name": "createVirtualPaste",
+      "description": "Paste from clipboard with timeout options",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "notifyOnTimeout": {
+            "type": "boolean",
+            "description": "Whether to notify when a timeout occurs (default: true)"
+          },
+          "timeoutAborts": {
+            "type": "boolean",
+            "description": "Whether timeout aborts the macro (default: false)"
+          }
+        }
+      }
+    },
+    {
+      "name": "createVirtualQuit",
+      "description": "Quit an application with various quit variants and targeting options",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "type": "string",
+            "enum": ["Quit", "QuitRelaunch", "ForceQuit", "ForceQuitRelaunch"],
+            "description": "Which variant of quit to perform (default: Quit)"
+          },
+          "target": {
+            "type": "string",
+            "enum": ["Front", "Specific"],
+            "description": "Whether to target the frontmost app or a specific one (default: Front)"
+          },
+          "specific": {
+            "type": "object",
+            "description": "If targeting a specific app, provide identification options"
+          },
+          "timeoutAborts": {
+            "type": "boolean",
+            "description": "Whether timeout aborts the macro (default: true)"
+          }
+        }
+      }
+    },
+    {
+      "name": "createVirtualSwitchCase",
+      "description": "Execute different actions based on source value comparison (switch statement with comprehensive source options)",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "enum": [
+              "Clipboard",
+              "NamedClipboard",
+              "TriggerClipboard",
+              "Variable",
+              "Text",
+              "Calculation",
+              "EnvironmentVariable",
+              "File"
+            ],
+            "description": "Source value used for comparison"
+          },
+          "variable": {
+            "type": "string",
+            "description": "Variable name (required when source is 'Variable')"
+          },
+          "text": {
+            "type": "string",
+            "description": "Text value (used when source is 'Text')"
+          },
+          "textProcessingMode": {
+            "type": "string",
+            "enum": ["TextTokensOnly", "Nothing"],
+            "description": "Processing mode for text (when source is 'Text')"
+          },
+          "calculation": {
+            "type": "string",
+            "description": "Calculation expression (used when source is 'Calculation')"
+          },
+          "environmentVariable": {
+            "type": "string",
+            "description": "Environment variable name (used when source is 'EnvironmentVariable')"
+          },
+          "path": {
+            "type": "string",
+            "description": "File path (used when source is 'File')"
+          },
+          "namedClipboard": {
+            "type": "object",
+            "description": "Named clipboard options (used when source is 'NamedClipboard')",
+            "properties": {
+              "uid": {
+                "type": "string",
+                "description": "Clipboard UID"
+              },
+              "redundantDisplayName": {
+                "type": "string",
+                "description": "Display name"
+              }
+            }
+          },
+          "cases": {
+            "type": "array",
+            "description": "Array of case objects with operator, testValue, and actions",
+            "items": {
+              "type": "object",
+              "properties": {
+                "operator": {
+                  "type": "string",
+                  "enum": [
+                    "IsEmpty",
+                    "IsNotEmpty",
+                    "Is",
+                    "IsNot",
+                    "Contains",
+                    "DoesNotContain",
+                    "StartsWith",
+                    "EndsWith",
+                    "IsBefore",
+                    "IsAfter",
+                    "Matches",
+                    "DoesNotMatch",
+                    "LessThan",
+                    "LessThanOrEqual",
+                    "Equal",
+                    "GreaterThanOrEqual",
+                    "GreaterThan",
+                    "NotEqual",
+                    "Otherwise"
+                  ],
+                  "description": "Comparison operator"
+                },
+                "testValue": {
+                  "type": "string",
+                  "description": "Value to compare against"
+                },
+                "actions": {
+                  "type": "array",
+                  "description": "Actions to execute when this case matches"
+                }
+              }
+            }
+          }
+        },
+        "required": ["source", "cases"]
+      }
+    },
+    {
+      "name": "createVirtualReturn",
+      "description": "Return a value from the macro with token preset support",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The string to return from the macro"
+          },
+          "tokenPreset": {
+            "type": "string",
+            "description": "Token preset for convenience (overrides text if provided)"
+          }
+        },
+        "required": ["text"]
+      }
+    },
+    {
+      "name": "createVirtualCancel",
+      "description": "Cancel macro execution with various cancel types",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cancelType": {
+            "type": "string",
+            "enum": [
+              "CancelAllMacros",
+              "CancelAllOtherMacros",
+              "CancelThisMacro",
+              "CancelJustThisMacro",
+              "CancelSpecificMacro",
+              "RetryThisLoop",
+              "ContinueLoop",
+              "BreakFromLoop"
+            ],
+            "description": "Type of cancel operation to perform"
+          },
+          "instance": {
+            "type": "string",
+            "description": "For CancelSpecificMacro, the macro name or UUID to cancel"
+          }
+        },
+        "required": ["cancelType"]
+      }
+    },
+    {
+      "name": "createVirtualClickAtFoundImage",
+      "description": "Advanced image-based mouse control that finds images first, then clicks/drags relative to them. Perfect for UI elements that may move or change. When relative:'Image' (default), finds image then acts relative to it. When relative:'Screen'/'Window', works like createVirtualMoveAndClick. Supports dragging from found images with mouseDrag:'Absolute'/'Relative' and dragTargetX/Y.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "clickKind": {
+            "type": "string",
+            "enum": ["Click", "DoubleClick", "RightClick", "Move", "Release"],
+            "description": "Type of click (default: Click)"
+          },
+          "button": {
+            "type": "string",
+            "enum": ["Left", "Right", "Middle"],
+            "description": "Mouse button (default: Left)"
+          },
+          "clickModifiers": {
+            "type": ["string", "number", "object"],
+            "description": "Modifier keys as string, number, or object (default: 0)"
+          },
+          "horizontal": {
+            "type": "number",
+            "description": "X coordinate offset (default: 0)"
+          },
+          "vertical": {
+            "type": "number",
+            "description": "Y coordinate offset (default: 0)"
+          },
+          "relative": {
+            "type": "string",
+            "enum": ["Image", "Window", "Screen", "Mouse", "Absolute"],
+            "description": "Coordinate reference system (default: Image)"
+          },
+          "relativeCorner": {
+            "type": "string",
+            "enum": [
+              "TopLeft",
+              "TopRight",
+              "BottomLeft",
+              "BottomRight",
+              "Center"
+            ],
+            "description": "Corner for relative positioning (default: Center for Image, TopLeft for Mouse/Absolute)"
+          },
+          "imageSource": {
+            "type": "string",
+            "enum": ["Image", "File", "NamedClipboard", "Screen"],
+            "description": "Source of template image (default: Image)"
+          },
+          "fuzz": {
+            "type": "number",
+            "description": "Image match tolerance 0-100 (default: 15)"
+          },
+          "waitForImage": {
+            "type": "boolean",
+            "description": "Wait for image to appear (default: true)"
+          },
+          "imageSelection": {
+            "type": "string",
+            "enum": ["Unique", "Best", "TopLeft"],
+            "description": "Which image if multiple found (default: Unique)"
+          },
+          "namedClipboardUUID": {
+            "type": "string",
+            "description": "UUID for named clipboard (required if imageSource is NamedClipboard)"
+          },
+          "filePath": {
+            "type": "string",
+            "description": "File path for image (required if imageSource is File)"
+          },
+          "screenArea": {
+            "type": "object",
+            "description": "Area to search/click (default: entire screen)"
+          },
+          "imageScreenArea": {
+            "type": "object",
+            "description": "Area to crop image search when imageSource is Screen"
+          },
+          "mouseDrag": {
+            "type": "string",
+            "enum": ["None", "Absolute", "Relative", "To", "From"],
+            "description": "Mouse drag behavior (default: None). 'Absolute': drag from found image to specific coordinates. 'Relative': drag by offset from found image position"
+          },
+          "dragTargetX": {
+            "type": "number",
+            "description": "X coordinate for drag target or X offset for relative drags (default: 0)"
+          },
+          "dragTargetY": {
+            "type": "number",
+            "description": "Y coordinate for drag target or Y offset for relative drags (default: 0)"
+          },
+          "restoreMouseLocation": {
+            "type": "boolean",
+            "description": "Restore mouse position after click (default: false)"
+          }
+        }
+      }
+    },
+    {
+      "name": "createVirtualManipulateWindow",
+      "description": "Manipulate windows with comprehensive targeting and manipulation options",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "manipulation": {
+            "type": "string",
+            "description": "The type of window manipulation to perform (default: Center)"
+          },
+          "values": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 2,
+            "maxItems": 2,
+            "description": "For ScaleBy, ResizeBy, ResizeTo, MoveBy, MoveTo operations: [horizontal, vertical] or [width, height]"
+          },
+          "moveAndResizePreset": {
+            "type": "string",
+            "description": "For MoveAndResize operations, the preset configuration to use (default: Custom)"
+          },
+          "customValues": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "For MoveAndResize Custom: [horizontal, vertical, width, height] or CenterAt: [x, y, z]"
+          },
+          "windowTarget": {
+            "type": "string",
+            "description": "Which window(s) to target (default: FrontWindow)"
+          },
+          "windowIdentifier": {
+            "type": "string",
+            "description": "For window targeting that requires a string parameter"
+          },
+          "windowIndex": {
+            "type": "number",
+            "description": "For window targeting that requires an integer parameter"
+          },
+          "applicationTarget": {
+            "type": "string",
+            "description": "Application targeting (default: Front)"
+          },
+          "specificApplication": {
+            "type": "object",
+            "description": "If targeting a specific application"
+          },
+          "stopOnFailure": {
+            "type": "boolean",
+            "description": "If false, failure does not abort macro (default: true)"
+          },
+          "notifyOnFailure": {
+            "type": "boolean",
+            "description": "If false, do not notify on failure (default: true)"
+          }
+        }
+      }
+    },
+    {
+      "name": "createVirtualPlaySound",
+      "description": "Play a system sound or custom sound file with advanced options",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "sound": {
+            "type": "string",
+            "description": "Built-in sound name to play (default: 'Tink' if omitted)"
+          },
+          "path": {
+            "type": "string",
+            "description": "Full path to a custom sound file (overrides sound if provided)"
+          },
+          "asynchronously": {
+            "type": "boolean",
+            "description": "Whether the sound should play asynchronously (default: true)"
+          },
+          "volume": {
+            "type": "number",
+            "description": "Volume percentage 0-100 (default: 75)"
+          },
+          "deviceID": {
+            "type": "string",
+            "description": "Output device identifier (default: 'SOUNDEFFECTS')"
+          },
+          "timeoutAborts": {
+            "type": "boolean",
+            "description": "Whether timeout should abort the macro (default: true)"
+          }
+        }
+      }
+    },
+    {
+      "name": "createVirtualScreenCapture",
+      "description": "Take a screenshot with comprehensive area selection and destination options",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "screenArea": {
+            "type": "object",
+            "description": "Area of the screen/window to capture"
+          },
+          "destination": {
+            "type": ["string", "object"],
+            "description": "Clipboard destination: undefined (SystemClipboard), 'TriggerClipboard', or {name, uid?} for NamedClipboard"
+          },
+          "alwaysNominalResolution": {
+            "type": "boolean",
+            "description": "If true, capture at nominal resolution (default: false)"
+          },
+          "stopOnFailure": {
+            "type": "boolean",
+            "description": "If true, abort macro on failure (default: false)"
+          },
+          "notifyOnFailure": {
+            "type": "boolean",
+            "description": "If false, do not notify on failure (default: true)"
+          }
+        }
+      }
+    },
+    {
+      "name": "createVirtualFile",
+      "description": "Perform file operations with various file system actions",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "enum": [
+              "Reveal",
+              "CreateUnique",
+              "OnlyMove",
+              "OnlyRename",
+              "Move",
+              "Copy",
+              "Duplicate",
+              "Trash",
+              "Delete",
+              "RecursiveDelete"
+            ],
+            "description": "The file operation to perform"
+          },
+          "source": {
+            "type": "string",
+            "description": "Source file or directory path (default: empty string)"
+          },
+          "destination": {
+            "type": "string",
+            "description": "Destination file or directory path (required for CreateUnique, OnlyMove, OnlyRename, Move, Copy)"
+          },
+          "outputPath": {
+            "type": "string",
+            "description": "Output path for CreateUnique operation"
+          },
+          "stopOnFailure": {
+            "type": "boolean",
+            "description": "If true, abort macro on failure (default: false)"
+          },
+          "notifyOnFailure": {
+            "type": "boolean",
+            "description": "If false, do not notify on failure (default: true)"
+          }
+        },
+        "required": ["operation"]
+      }
+    },
+    {
+      "name": "createVirtualInsertText",
+      "description": "Insert text with various methods including typing, pasting, and display modes",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text to insert or display"
+          },
+          "tokenPreset": {
+            "type": "string",
+            "description": "Token preset for convenience (overrides text if provided)"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "ByTyping",
+              "ByPasting",
+              "ByPastingStyles",
+              "DisplayWindow",
+              "DisplayBriefly",
+              "DisplayLarge"
+            ],
+            "description": "Action mode - how the text should be inserted or displayed (default: ByTyping)"
+          },
+          "processingMode": {
+            "type": "string",
+            "enum": ["TextTokensOnly", "Nothing"],
+            "description": "Text processing mode (default: normal processing)"
+          },
+          "includeStyledText": {
+            "type": "boolean",
+            "description": "Whether to include styled text data for ByPastingStyles and DisplayWindow (default: false)"
+          },
+          "rtfContent": {
+            "type": "string",
+            "description": "RTF string for styled text (used when includeStyledText is true)"
+          },
+          "targetingType": {
+            "type": "string",
+            "enum": ["Front"],
+            "description": "Target application for ByTyping action (default: Front)"
+          }
+        },
+        "required": ["text"]
+      }
+    },
+    {
+      "name": "createVirtualSetClipboardToText",
+      "description": "Set clipboard to text with comprehensive options for styling, processing, and destinations",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The text to set the clipboard to"
+          },
+          "presetMode": {
+            "type": "string",
+            "description": "Preset mode for convenience: 'delete', 'positionCursor', or any KM token key"
+          },
+          "processingMode": {
+            "type": "string",
+            "enum": ["TextTokensOnly", "Nothing"],
+            "description": "Text processing mode (default: normal processing)"
+          },
+          "includeStyledText": {
+            "type": "boolean",
+            "description": "Whether to include styled text data (default: false)"
+          },
+          "rtfContent": {
+            "type": "string",
+            "description": "RTF string for styled text (used when includeStyledText is true)"
+          },
+          "destination": {
+            "type": ["string", "object"],
+            "description": "Clipboard destination: undefined (system), 'TriggerClipboard', or named clipboard object"
+          },
+          "stopOnFailure": {
+            "type": "boolean",
+            "description": "If false, failure does not abort macro (default: true)"
+          },
+          "notifyOnFailure": {
+            "type": "boolean",
+            "description": "If false, do not notify on failure (default: true)"
+          }
+        }
+      }
+    },
+    {
+      "name": "createVirtualShowSpecificApp",
+      "description": "Show a specific application with comprehensive targeting options",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "enum": ["Front", "Specific"],
+            "description": "Which application to show (default: Specific)"
+          },
+          "specific": {
+            "type": "object",
+            "description": "App identification options",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Application name"
+              },
+              "bundleIdentifier": {
+                "type": "string",
+                "description": "Application bundle identifier"
+              },
+              "path": {
+                "type": "string",
+                "description": "Application path"
+              },
+              "match": {
+                "type": "string",
+                "enum": ["Name", "BundleID", "Path"],
+                "description": "How to match the application"
+              },
+              "newFile": {
+                "type": "string",
+                "description": "Optional new file path"
+              }
+            }
+          }
+        },
+        "required": ["specific"]
+      }
+    },
+    {
+      "name": "createVirtualPressButton",
+      "description": "Press UI buttons with various action types and comprehensive options",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "PressButtonNamed",
+              "ShowMenuOfButtonNamed",
+              "DecrementSliderNamed",
+              "IncrementSliderNamed",
+              "CancelButtonNamed"
+            ],
+            "description": "Type of button action to perform"
+          },
+          "buttonName": {
+            "type": "string",
+            "description": "Name of the button/slider to interact with"
+          },
+          "waitForEnabledButton": {
+            "type": "boolean",
+            "description": "Whether to wait for the button to be enabled before pressing"
+          },
+          "timeoutAborts": {
+            "type": "boolean",
+            "description": "Whether timeout aborts the macro (only applies when waitForEnabledButton is true)"
+          },
+          "notifyOnTimeout": {
+            "type": "boolean",
+            "description": "Whether to notify on timeout (only applies when waitForEnabledButton is true)"
+          },
+          "stopOnFailure": {
+            "type": "boolean",
+            "description": "Whether failure aborts the macro"
+          },
+          "notifyOnFailure": {
+            "type": "boolean",
+            "description": "Whether to notify on failure"
+          }
+        },
+        "required": ["action", "buttonName"]
+      }
+    },
+    {
+      "name": "createVirtualWhile",
+      "description": "Execute actions repeatedly in a while loop based on specified conditions",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "conditions": {
+            "type": "array",
+            "description": "Array of condition objects to evaluate for the loop",
+            "items": {
+              "type": "object"
+            }
+          },
+          "match": {
+            "type": "string",
+            "enum": ["All", "Any", "None"],
+            "description": "How to evaluate the list of conditions (default: All)"
+          },
+          "actions": {
+            "type": "array",
+            "description": "Array of VirtualActions to execute while conditions are met",
+            "items": {
+              "type": "object"
+            }
+          },
+          "timeoutAborts": {
+            "type": "boolean",
+            "description": "Whether a timeout in a nested action should abort the whole macro (default: true)"
+          },
+          "notifyOnTimeout": {
+            "type": "boolean",
+            "description": "Whether to notify when a timeout occurs"
+          }
+        },
+        "required": ["conditions", "actions"]
+      }
+    },
+    {
+      "name": "createVirtualClearTypedStringBuffer",
+      "description": "Clear the typed string buffer",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "createVirtualOpen",
+      "description": "Open files, folders, or URLs with application targeting options",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "The path or string to open (file, folder, or URL)"
+          },
+          "target": {
+            "type": "string",
+            "enum": ["Front", "Specific"],
+            "description": "Whether to target the frontmost app or a specific one (default: Front)"
+          },
+          "specific": {
+            "type": "object",
+            "description": "If targeting a specific app, provide identification options"
+          },
+          "stopOnFailure": {
+            "type": "boolean",
+            "description": "Whether failure aborts the macro (default: true)"
+          },
+          "notifyOnFailure": {
+            "type": "boolean",
+            "description": "Whether to notify on failure (default: true)"
+          }
+        },
+        "required": ["path"]
+      }
+    },
+    {
+      "name": "createVirtualOpenURL",
+      "description": "Open a URL with comprehensive targeting and processing options",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "The URL to open"
+          },
+          "target": {
+            "type": "string",
+            "enum": ["Front", "Specific"],
+            "description": "Whether to target the frontmost app or a specific one (default: Front)"
+          },
+          "specific": {
+            "type": "object",
+            "description": "If targeting a specific app, provide identification options"
+          },
+          "processingMode": {
+            "type": "string",
+            "enum": ["TextTokensOnly", "Nothing"],
+            "description": "Text processing mode for the URL"
+          },
+          "openInBackground": {
+            "type": "boolean",
+            "description": "Open URL in background (default: false)"
+          },
+          "stopOnFailure": {
+            "type": "boolean",
+            "description": "Whether failure aborts the macro (default: true)"
+          },
+          "notifyOnFailure": {
+            "type": "boolean",
+            "description": "Whether to notify on failure (default: true)"
+          },
+          "timeoutAborts": {
+            "type": "boolean",
+            "description": "Whether timeout aborts the macro (default: true)"
+          },
+          "notifyOnTimeout": {
+            "type": "boolean",
+            "description": "Whether to notify on timeout (default: true)"
+          }
+        },
+        "required": ["url"]
+      }
+    },
+    {
+      "name": "createVirtualDisplayTextBriefly",
+      "description": "Display text briefly (notification-style)",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text to display"
+          },
+          "tokenPreset": {
+            "type": "string",
+            "description": "Token preset for convenience (overrides text if provided)"
+          },
+          "processingMode": {
+            "type": "string",
+            "enum": ["TextTokensOnly", "Nothing"],
+            "description": "Text processing mode (default: normal processing)"
+          }
+        },
+        "required": ["text"]
+      }
+    },
+    {
+      "name": "createVirtualDisplayTextWindow",
+      "description": "Display text in a window with optional styling",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text to display"
+          },
+          "tokenPreset": {
+            "type": "string",
+            "description": "Token preset for convenience (overrides text if provided)"
+          },
+          "processingMode": {
+            "type": "string",
+            "enum": ["TextTokensOnly", "Nothing"],
+            "description": "Text processing mode (default: normal processing)"
+          },
+          "includeStyledText": {
+            "type": "boolean",
+            "description": "Whether to include styled text data (default: false)"
+          },
+          "rtfContent": {
+            "type": "string",
+            "description": "Optional RTF content when includeStyledText is true"
+          }
+        },
+        "required": ["text"]
+      }
+    },
+    {
+      "name": "createVirtualSelectMenuItem",
+      "description": "Select a menu item in a target application (front or specific).",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "enum": ["Front", "Specific"],
+            "description": "Which application to target (frontmost or specific)"
+          },
+          "specific": {
+            "type": "object",
+            "description": "Identification options for a specific app (e.g., name, bundleIdentifier)",
+            "properties": {
+              "name": { "type": "string", "description": "App name" },
+              "bundleIdentifier": {
+                "type": "string",
+                "description": "App bundle identifier"
+              }
+            }
+          },
+          "menuPath": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Full menu path as array of strings (e.g. ['File','Export','PDF'])"
+          },
+          "stopOnFailure": {
+            "type": "boolean",
+            "description": "If false, failure does not abort macro (default true)"
+          },
+          "notifyOnFailure": {
+            "type": "boolean",
+            "description": "If false, do not notify on failure (default true)"
+          }
+        },
+        "required": ["menuPath"]
+      }
+    },
+    {
+      "name": "createVirtualShowStatusMenu",
+      "description": "Display the Keyboard Maestro status menu (takes no parameters)",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "createVirtualUseVariable",
+      "description": "Use a variable to perform various system actions like setting mouse position, window properties, or system volume",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "variable": {
+            "type": "string",
+            "description": "The variable name to use"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "SetMouse",
+              "SetWindowPosition",
+              "SetWindowSize",
+              "SetWindowFrame",
+              "SetWindowByName",
+              "SetWindowByNameContains",
+              "SetWindowByNameMatches",
+              "SetApplicationByName",
+              "SetApplicationByNameContains",
+              "SetApplicationByNameMatches",
+              "SetSystemVolume"
+            ],
+            "description": "The action to perform with the variable"
+          },
+          "stopOnFailure": {
+            "type": "boolean",
+            "description": "If true, abort macro on failure (default: false)"
+          },
+          "notifyOnFailure": {
+            "type": "boolean",
+            "description": "If false, do not notify on failure (default: true)"
+          }
+        },
+        "required": ["variable", "action"]
+      }
+    },
+    {
+      "name": "createVirtualBreakFromLoop",
+      "description": "Break from current loop",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "createVirtualContinueLoop",
+      "description": "Continue to next loop iteration",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "createVirtualRetryThisLoop",
+      "description": "Retry current loop iteration",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "createVirtualCut",
+      "description": "Cut selection to clipboard with timeout options",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "notifyOnTimeout": {
+            "type": "boolean",
+            "description": "Whether to notify when a timeout occurs (default: true)"
+          },
+          "timeoutAborts": {
+            "type": "boolean",
+            "description": "Whether timeout aborts the macro (default: false)"
+          }
+        }
+      }
+    },
+    {
+      "name": "runVirtualMacro",
+      "description": "Execute an array of virtual actions as an ephemeral macro",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "actions": {
+            "type": "array",
+            "description": "Array of virtual action objects created by createVirtual* functions"
+          },
+          "macroName": {
+            "type": "string",
+            "description": "Name for the macro (for debugging/logging)"
+          }
+        },
+        "required": ["actions", "macroName"]
+      }
+    },
+    {
+      "name": "getMousePosition",
+      "description": "Get current mouse position",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "asArray": {
+            "type": "boolean",
+            "description": "Return as [x, y] array instead of 'x,y' string"
+          }
+        }
+      }
+    },
+    {
+      "name": "getFrontAppInfo",
+      "description": "Get information about the frontmost application",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "getFrontWindowInfo",
+      "description": "Get information about the frontmost window",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "getSystemVolume",
+      "description": "Get system volume level (0-100)",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "getScreenFrames",
+      "description": "Get frame information for all screens",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "getRunningApps",
+      "description": "Get list of running application names",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "getNetworkInfo",
+      "description": "Get network information including IP and WiFi",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "getUserInfo",
+      "description": "Get current user information",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "getSystemVersion",
+      "description": "Get macOS version information",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "getSystemClipboard",
+      "description": "Get current clipboard contents",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "getPastClipboard",
+      "description": "Get previous clipboard entry by index",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number",
+            "description": "Index of past clipboard entry (0 = most recent)"
+          }
+        },
+        "required": ["index"]
+      }
+    },
+    {
+      "name": "getFinderSelections",
+      "description": "Get array of selected Finder items",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "getScreenResolution",
+      "description": "Get screen resolution information",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "generateMacro",
+      "description": "Generate Keyboard Maestro XML from virtual actions with flexible output options (raw XML, file export, KM group import, text window display)",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "actions": {
+            "type": "array",
+            "description": "Array of virtual action objects created by createVirtual* functions"
+          },
+          "options": {
+            "type": "object",
+            "description": "Configuration options for XML generation and export",
+            "properties": {
+              "addPlistWrapping": {
+                "type": "boolean",
+                "description": "Add plist XML wrapper (required for file export and KM group import)"
+              },
+              "exportTarget": {
+                "type": "object",
+                "description": "Export target configuration",
+                "properties": {
+                  "displayInTextWindow": {
+                    "type": "boolean",
+                    "description": "Display XML in Keyboard Maestro text window"
+                  },
+                  "filePath": {
+                    "type": "string",
+                    "description": "File path to export .kmmacros file (automatically adds .kmmacros extension if missing)"
+                  },
+                  "toKMGroup": {
+                    "type": "string",
+                    "description": "Name of Keyboard Maestro macro group to import the macro into"
+                  }
+                }
+              },
+              "macroName": {
+                "type": "string",
+                "description": "Name for the generated macro (used for file export and KM group import)"
+              }
+            }
+          }
+        },
+        "required": ["actions"]
+      }
+    },
+    {
+      "name": "getAudioDevices",
+      "description": "Get current audio input, output, and effects devices",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "getFinderSelections",
+      "description": "Get the paths of all currently selected items in Finder",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "getFrontAppInfo",
+      "description": "Get information about the frontmost application (name, bundle ID, and path)",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "getFrontWindowInfo",
+      "description": "Get information about the frontmost window (name and frame coordinates)",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "getKeyboardLayout",
+      "description": "Get the name of the active macOS keyboard layout/input source",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "getMousePosition",
+      "description": "Get the current mouse position coordinates",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "asArray": {
+            "type": "boolean",
+            "description": "If true, returns coordinates as [x, y] array. If false or undefined, returns as 'x,y' string (default)"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "getNetworkInfo",
+      "description": "Get network information including location, wireless networks, and IP address",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "getPastClipboard",
+      "description": "Get clipboard history entries",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number",
+            "description": "Index of clipboard history entry to retrieve (optional, defaults to most recent)"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "getRunningApps",
+      "description": "Get list of currently running applications",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "getScreenFrames",
+      "description": "Get screen frame information for all displays",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "getScreenResolution",
+      "description": "Get screen resolution information",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "getSystemClipboard",
+      "description": "Get current system clipboard content",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "getSystemVersion",
+      "description": "Get macOS version information",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "getSystemVolume",
+      "description": "Get current system volume level",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "getUserInfo",
+      "description": "Get current user information",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "normalizeAppleScriptShortcut",
+      "description": "Convert various keystroke formats to AppleScript-compatible modifier mask → key code maps. Supports string shortcuts, single characters, event codes, raw key codes, modifier-only combinations, and pre-formatted maps.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": ["string", "number", "object"],
+            "description": "Keystroke input to normalize. Can be: string shortcut ('Cmd+S'), single character ('a'), event code ('Space'), raw key code (36), modifier-only ('Cmd'), or pre-formatted map ({256: 1})"
+          }
+        },
+        "required": ["input"]
+      }
+    },
+    {
+      "name": "xmlToJson",
+      "description": "Convert Keyboard Maestro XML to JSON format for easier manipulation and processing",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "xml": {
+            "type": "string",
+            "description": "XML string to convert to JSON"
+          },
+          "options": {
+            "type": "object",
+            "description": "Conversion options",
+            "properties": {
+              "ignoreAttributes": {
+                "type": "boolean",
+                "description": "Whether to ignore XML attributes (default: false)"
+              },
+              "textNodeName": {
+                "type": "string",
+                "description": "Name for text nodes (default: '#text')"
+              }
+            }
+          }
+        },
+        "required": ["xml"]
+      }
+    },
+    {
+      "name": "jsonToXml",
+      "description": "Convert JSON back to Keyboard Maestro XML format",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "json": {
+            "type": "object",
+            "description": "JSON object to convert to XML"
+          },
+          "options": {
+            "type": "object",
+            "description": "Conversion options",
+            "properties": {
+              "format": {
+                "type": "boolean",
+                "description": "Whether to format the output XML (default: true)"
+              },
+              "indentSize": {
+                "type": "number",
+                "description": "Number of spaces for indentation (default: 2)"
+              }
+            }
+          }
+        },
+        "required": ["json"]
+      }
+    },
+    {
+      "name": "encodeStyledTextData",
+      "description": "Encode RTF content for Keyboard Maestro's StyledText format (base64 encoded)",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "rtf": {
+            "type": "string",
+            "description": "RTF string to encode for StyledText"
+          }
+        },
+        "required": ["rtf"]
+      }
+    },
+    {
+      "name": "decodeStyledTextData",
+      "description": "Decode StyledText data back to RTF and plain text",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "base64Data": {
+            "type": "string",
+            "description": "Base64 encoded StyledText data to decode"
+          }
+        },
+        "required": ["base64Data"]
+      }
+    }
+  ]
+}

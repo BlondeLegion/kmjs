@@ -1,0 +1,166 @@
+A Random Unique ID
+AddressBook Email
+AddressBook First Name
+AddressBook Last Name
+AddressBook Name
+AddressBook Nickname
+AddressBook Note
+AddressBook Organization
+All Audio Input Devices
+All Audio Output Devices
+All Background Application Names
+All Foreground Application Names
+All Running Application Names
+All Screen Frames
+All Window Names
+Calculation
+Calculation with Result in Binary
+Calculation with Result in Decimal
+Calculation with Result in Hex
+Calculation with Result in Octal
+Comma-separated list of the current execution instances
+Comma-separated list of variables accessed by this macro
+Current Audio Input Device
+Current Audio Input Device UID
+Current Audio Output Device
+Current Audio Output Device UID
+Current Audio Sound Effects Device
+Current Audio Sound Effects Device UID
+Current Mouse Location
+Current Track Album
+Current Track Artist
+Current Track Name
+Current Track Rating
+Delete (Hide a Variable)
+Executing Macro
+Executing Macro Group
+Executing Macro Group UUID
+Executing Macro UUID
+Executing This Macro
+Executing This Macro Group
+Executing This Macro Group UUID
+Executing This Macro UUID
+Find Pasteboard
+Finder Insertion Location Path
+First Screen Frame
+Formatted (ICU) Date Time
+Formatted (ICU) Date Time For
+Formatted (ICU) Date Time Minus
+Formatted (ICU) Date Time Plus
+Formatted Calculation
+Front Application Bundle ID
+Front Application Long Version
+Front Application Name
+Front Application Path
+Front Application Version
+Front Browser Bundle ID
+Front Browser Document Title
+Front Browser Document URL
+Front Browser Field
+Front Browser JavaScript
+Front Browser Long Version
+Front Browser Name
+Front Browser Path
+Front Browser Ready State
+Front Browser Version
+Front Browser Window Name
+Front Window Frame
+Front Window Name
+Front Window Position
+Front Window Size
+Google Chrome Bundle ID
+Google Chrome Document Title
+Google Chrome Document URL
+Google Chrome Field
+Google Chrome JavaScript
+Google Chrome Long Version
+Google Chrome Name
+Google Chrome Path
+Google Chrome Ready State
+Google Chrome Version
+Google Chrome Window Name
+ID of Last Keyboard Maestro Engine Window Opened by This Macro
+ID of the Last Aborted Action
+JSON From Dictionary
+JSON From Variables
+JSON Value
+Keyboard Layout Input Source
+Keyboard Maestro Long Version
+Keyboard Maestro Version
+Linefeed (\n)
+Long Date
+Machine IP Address
+Machine Name
+Machine Unique ID
+Macro Name for UUID
+Mail BCC Recipients
+Mail CC Recipients
+Mail Contents
+Mail Raw Source
+Mail Recipients
+Mail Reply To
+Mail Sender
+Mail Subject
+Mail To Recipients
+Main Screen Frame
+Main Screen Possible Resolutions (array of resolutions)
+Main Screen Resolution (width,height,pixelwidth,pixelheight,refresh)
+Main Screen Visible Frame
+Music Player State (stopped/playing/paused/fast forwarding/rewinding/not running)
+Named Clipboard
+Named Clipboard Flavors
+Network Location
+Number Date
+Opaque ID of the Current Execution Instance
+Option-Return (Insert Text by Typing Only)
+Past Clipboard
+Past Clipboard Flavors
+Position Cursor (Insert Text Only)
+Previous Application Name
+Prompt for Snippet Placeholder (Default from Variable)
+Prompt for Snippet Placeholder (Default Text)
+Return (\r)
+Safari Bundle ID
+Safari Document Title
+Safari Document URL
+Safari Field
+Safari JavaScript
+Safari Long Version
+Safari Name
+Safari Path
+Safari Ready State
+Safari Version
+Safari Window Name
+Second Screen Frame
+Short Date
+Space
+Success Result of Last Action
+System Clipboard
+System Clipboard Flavors
+System Long Version
+System Version
+System Volume
+Tab (\t)
+The Last Alert Button Selected
+The Last Custom HTML Result
+The Last Found Image
+The Last Prompt Button Selected
+The Macro Name of the Specified Instance
+The Modifiers Used When Completing a Prompt With List Action
+The Path of the Front Window’s Document
+The Path of the Selected Finder Item
+The Paths of the Selected Finder Items
+The Text Entered in a Paste by Name Action
+The Text Entered in a Prompt With List Action
+The Text Entered in a Select Menu by Name Action
+Time
+Time With Seconds
+Tripped Trigger Clipboard Flavors
+Tripped Trigger Clipboard Value
+Tripped Trigger Text
+Tripped Trigger Type
+Tripped Trigger Value
+User Home Directory
+User Login ID
+User Name
+Wireless Network Name(s)

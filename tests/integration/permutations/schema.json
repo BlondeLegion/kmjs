@@ -1,0 +1,1555 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "RelativeCorner": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "description": "Corner of an area or image for relative positioning.\n- \"Center\", \"TopLeft\", \"TopRight\", \"BottomLeft\", \"BottomRight\"",
+      "enum": [
+        "BottomLeft",
+        "BottomRight",
+        "Center",
+        "TopLeft",
+        "TopRight"
+      ],
+      "type": "string"
+    },
+    "MouseDrag": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "description": "Mouse drag operation types.\n- \"None\": No drag\n- \"To\": Drag to a location\n- \"Absolute\": Absolute drag\n- \"Relative\": Relative drag\n- \"Hold\": Hold mouse button",
+      "enum": [
+        "Absolute",
+        "Hold",
+        "None",
+        "Relative",
+        "To"
+      ],
+      "type": "string"
+    },
+    "ImageSource": {
+      "description": "Source of an image for matching in KM actions.\n- \"Image\": Inline image\n- \"Icon\": App icon\n- \"SystemClipboard\": System clipboard\n- \"TriggerClipboard\": Trigger clipboard\n- \"NamedClipboard\": Named clipboard\n- \"File\": File path\n- \"Screen\": Screen capture",
+      "enum": [
+        "File",
+        "Icon",
+        "Image",
+        "NamedClipboard",
+        "Screen",
+        "SystemClipboard",
+        "TriggerClipboard"
+      ],
+      "type": "string"
+    },
+    "ImageSelection": {
+      "description": "How to select an image if multiple matches are found.\n- \"Unique\", \"Best\", \"Top\", \"Left\", \"Bottom\", \"Right\"",
+      "enum": [
+        "Best",
+        "Bottom",
+        "Left",
+        "Right",
+        "Top",
+        "Unique"
+      ],
+      "type": "string"
+    },
+    "ClickKind": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "description": "The kind of mouse click or movement to simulate.\n- \"Move\": Just move the mouse (no click)\n- \"Click\": Single click\n- \"DoubleClick\": Double click\n- \"TripleClick\": Triple click\n- \"Release\": Mouse button release",
+      "enum": [
+        "Click",
+        "DoubleClick",
+        "Move",
+        "Release",
+        "TripleClick"
+      ],
+      "type": "string"
+    },
+    "ActionResultCondition": {
+      "additionalProperties": false,
+      "description": "Condition for evaluating the result of a previous action.\n- ConditionType: \"ActionResult\"\n- ActionResultConditionType: \"IsOK\", \"IsNotOK\", or a string operator\n- ActionResultText: Optional text for comparison",
+      "properties": {
+        "ActionResultConditionType": {
+          "enum": [
+            "Contains",
+            "DoesNotContain",
+            "DoesNotMatch",
+            "EndsWith",
+            "Is",
+            "IsAfter",
+            "IsBefore",
+            "IsEmpty",
+            "IsNot",
+            "IsNotEmpty",
+            "IsNotOK",
+            "IsOK",
+            "Matches",
+            "StartsWith"
+          ],
+          "type": "string"
+        },
+        "ActionResultText": {
+          "type": "string"
+        },
+        "ConditionType": {
+          "const": "ActionResult",
+          "type": "string"
+        }
+      },
+      "required": [
+        "ActionResultConditionType",
+        "ConditionType"
+      ],
+      "type": "object"
+    },
+    "AppMatchType": {
+      "description": "How to match a specific application in KM actions.\n- \"Name\": Match by app name\n- \"BundleID\": Match by bundle identifier\n- \"Path\": Match by file path",
+      "enum": [
+        "BundleID",
+        "Name",
+        "Path"
+      ],
+      "type": "string"
+    },
+    "ApplicationCondition": {
+      "additionalProperties": false,
+      "description": "Condition for checking the state of an application.\n- ConditionType: \"Application\"\n- ApplicationConditionType: App state (running, active, hidden, etc)\n- Application: App identification options",
+      "properties": {
+        "Application": {
+          "$ref": "#/definitions/SpecificAppOptions"
+        },
+        "ApplicationConditionType": {
+          "enum": [
+            "Active",
+            "Hidden",
+            "NotActive",
+            "NotHidden",
+            "NotRunning",
+            "Running",
+            "RunningButHidden",
+            "RunningButNotActive"
+          ],
+          "type": "string"
+        },
+        "ConditionType": {
+          "const": "Application",
+          "type": "string"
+        }
+      },
+      "required": [
+        "Application",
+        "ApplicationConditionType",
+        "ConditionType"
+      ],
+      "type": "object"
+    },
+    "ButtonCondition": {
+      "additionalProperties": false,
+      "description": "Condition for checking the state of a button in the UI.\n- ConditionType: \"Button\"\n- ButtonConditionType: Existence, enabled, or on/off/mixed state\n- ButtonTitle: Title of the button\n- ButtonConditionSelectionType: How to match (is, contains, matches)",
+      "properties": {
+        "ButtonConditionSelectionType": {
+          "enum": [
+            "Contains",
+            "Is",
+            "Matches"
+          ],
+          "type": "string"
+        },
+        "ButtonConditionType": {
+          "enum": [
+            "DoesNotExist",
+            "Exists",
+            "ExistsButIsNotEnabled",
+            "IsEnabled",
+            "IsMixed",
+            "IsNotEnabled",
+            "IsOff",
+            "IsOn"
+          ],
+          "type": "string"
+        },
+        "ButtonTitle": {
+          "type": "string"
+        },
+        "ConditionType": {
+          "const": "Button",
+          "type": "string"
+        }
+      },
+      "required": [
+        "ButtonConditionSelectionType",
+        "ButtonConditionType",
+        "ButtonTitle",
+        "ConditionType"
+      ],
+      "type": "object"
+    },
+    "CalculationCondition": {
+      "additionalProperties": false,
+      "description": "Condition for evaluating a calculation expression.\n- ConditionType: \"Calculation\"\n- Text: The calculation expression to evaluate",
+      "properties": {
+        "ConditionType": {
+          "const": "Calculation",
+          "type": "string"
+        },
+        "Text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "Text"
+      ],
+      "type": "object"
+    },
+    "ClipboardCondition": {
+      "additionalProperties": false,
+      "description": "Condition for evaluating the contents of the clipboard.\n- ConditionType: \"Clipboard\"\n- ClipboardConditionType: Type of clipboard check (text, image, conforms, etc)\n- ClipboardText: Optional text for comparison\n- ClipboardSourceUseTriggerClipboard: Use the trigger clipboard if true",
+      "properties": {
+        "ClipboardConditionType": {
+          "enum": [
+            "ConformsTo",
+            "Contains",
+            "DoesNotConformTo",
+            "DoesNotContain",
+            "DoesNotHaveImage",
+            "DoesNotHaveText",
+            "DoesNotMatch",
+            "EndsWith",
+            "Equal",
+            "GreaterThan",
+            "GreaterThanOrEqual",
+            "HasImage",
+            "HasText",
+            "Is",
+            "IsAfter",
+            "IsBefore",
+            "IsEmpty",
+            "IsNot",
+            "IsNotEmpty",
+            "LessThan",
+            "LessThanOrEqual",
+            "Matches",
+            "NotEqual",
+            "StartsWith"
+          ],
+          "type": "string"
+        },
+        "ClipboardSourceUseTriggerClipboard": {
+          "type": "boolean"
+        },
+        "ClipboardText": {
+          "type": "string"
+        },
+        "ConditionType": {
+          "const": "Clipboard",
+          "type": "string"
+        }
+      },
+      "required": [
+        "ClipboardConditionType",
+        "ConditionType"
+      ],
+      "type": "object"
+    },
+    "EnvironmentVariableCondition": {
+      "additionalProperties": false,
+      "description": "Condition for evaluating an environment variable.\n- ConditionType: \"EnvironmentVariable\"\n- EnvironmentVariable: Name of the environment variable\n- EnvironmentVariableConditionType: Existence or comparison operator\n- EnvironmentVariableText: Optional text for comparison",
+      "properties": {
+        "ConditionType": {
+          "const": "EnvironmentVariable",
+          "type": "string"
+        },
+        "EnvironmentVariable": {
+          "type": "string"
+        },
+        "EnvironmentVariableConditionType": {
+          "enum": [
+            "Contains",
+            "DoesNotContain",
+            "DoesNotExist",
+            "DoesNotMatch",
+            "EndsWith",
+            "Equal",
+            "Exists",
+            "GreaterThan",
+            "GreaterThanOrEqual",
+            "Is",
+            "IsAfter",
+            "IsBefore",
+            "IsEmpty",
+            "IsNot",
+            "IsNotEmpty",
+            "LessThan",
+            "LessThanOrEqual",
+            "Matches",
+            "NotEqual",
+            "StartsWith"
+          ],
+          "type": "string"
+        },
+        "EnvironmentVariableText": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "EnvironmentVariable",
+        "EnvironmentVariableConditionType"
+      ],
+      "type": "object"
+    },
+    "FileAttributeCondition": {
+      "additionalProperties": false,
+      "description": "Condition for evaluating a file attribute (e.g., file size, creation date).\n- ConditionType: \"FileAttribute\"\n- Path: Path to the file\n- FileAttribute: Attribute to check\n- FileAttrtibuteConditionType: Operator for comparison\n- ConditionValue: Value to compare against",
+      "properties": {
+        "ConditionType": {
+          "const": "FileAttribute",
+          "type": "string"
+        },
+        "ConditionValue": {
+          "type": "string"
+        },
+        "FileAttribute": {
+          "enum": [
+            "AddedDate",
+            "BaseName",
+            "Comment",
+            "ContentKind",
+            "ContentType",
+            "CreationDate",
+            "DisplayName",
+            "DownloadedDate",
+            "Extension",
+            "ExtensionHidden",
+            "FileSize",
+            "FileType",
+            "GroupID",
+            "GroupName",
+            "HFSCreatorCode",
+            "HFSTypeCode",
+            "Invisible",
+            "LastUsedDate",
+            "ModificationDate",
+            "Name",
+            "OwnerID",
+            "OwnerName",
+            "Parent",
+            "PosixPermissions",
+            "Tags",
+            "WhereFrom"
+          ],
+          "type": "string"
+        },
+        "FileAttrtibuteConditionType": {
+          "$ref": "#/definitions/TextualConditionOperator"
+        },
+        "Path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "ConditionValue",
+        "FileAttribute",
+        "FileAttrtibuteConditionType",
+        "Path"
+      ],
+      "type": "object"
+    },
+    "FoundImageCondition": {
+      "additionalProperties": false,
+      "description": "Condition for evaluating the presence of a found image on the screen.\n- ConditionType: \"ScreenImage\"\n- ScreenImageConditionType: What to check for (contains, does not contain, etc)\n- ScreenArea: Area to search\n- ImageSource: Optional image source\n- Fuzz: Optional fuzziness for matching\n- DisplayMatches: Optional flag to display matches\n- ImageNamedClipboardName: Optional named clipboard\n- ImageNamedClipboardRedundandDisplayName: Optional redundant display name\n- ImagePath: Optional path to image file\n- ImageScreenArea: Optional screen area for image\n- ImageSelection: Optional image selection mode",
+      "properties": {
+        "ConditionType": {
+          "const": "ScreenImage",
+          "type": "string"
+        },
+        "DisplayMatches": {
+          "type": "boolean"
+        },
+        "Fuzz": {
+          "type": "number"
+        },
+        "ImageNamedClipboardName": {
+          "type": "string"
+        },
+        "ImageNamedClipboardRedundandDisplayName": {
+          "type": "string"
+        },
+        "ImagePath": {
+          "type": "string"
+        },
+        "ImageScreenArea": {
+          "$ref": "#/definitions/ScreenArea"
+        },
+        "ImageSelection": {
+          "$ref": "#/definitions/ImageSelection"
+        },
+        "ImageSource": {
+          "$ref": "#/definitions/ImageSource"
+        },
+        "ScreenArea": {
+          "$ref": "#/definitions/ScreenArea"
+        },
+        "ScreenImageConditionType": {
+          "enum": [
+            "Contains",
+            "ContainsUnique",
+            "DoesNotContain",
+            "DoesNotContainUnique"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "ScreenArea",
+        "ScreenImageConditionType"
+      ],
+      "type": "object"
+    },
+    "KeyCondition": {
+      "additionalProperties": false,
+      "description": "Condition for checking the state of a key.\n- ConditionType: \"Key\"\n- KeyCode: Key code number\n- KeyConditionType: \"Down\" or \"Up\"",
+      "properties": {
+        "ConditionType": {
+          "const": "Key",
+          "type": "string"
+        },
+        "KeyCode": {
+          "type": "number"
+        },
+        "KeyConditionType": {
+          "enum": [
+            "Down",
+            "Up"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "KeyCode",
+        "KeyConditionType"
+      ],
+      "type": "object"
+    },
+    "LocationCondition": {
+      "additionalProperties": false,
+      "description": "Condition for checking the state of a location.\n- ConditionType: \"Location\"\n- LocationConditionType: Operator for comparison\n- LocationName: Name of the location",
+      "properties": {
+        "ConditionType": {
+          "const": "Location",
+          "type": "string"
+        },
+        "LocationConditionType": {
+          "$ref": "#/definitions/StringConditionOperator"
+        },
+        "LocationName": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "LocationConditionType",
+        "LocationName"
+      ],
+      "type": "object"
+    },
+    "MacroCondition": {
+      "additionalProperties": false,
+      "description": "Condition for checking the state of a macro.\n- ConditionType: \"Macro\"\n- MacroUID: Unique identifier for the macro\n- MacroConditionType: Macro state (enabled, active, executing, etc)",
+      "properties": {
+        "ConditionType": {
+          "const": "Macro",
+          "type": "string"
+        },
+        "MacroConditionType": {
+          "enum": [
+            "IsActive",
+            "IsDisabled",
+            "IsEnabled",
+            "IsExecuting",
+            "IsInactive",
+            "IsNotExecuting"
+          ],
+          "type": "string"
+        },
+        "MacroUID": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "MacroConditionType",
+        "MacroUID"
+      ],
+      "type": "object"
+    },
+    "MenuCondition": {
+      "additionalProperties": false,
+      "description": "Condition for checking the state of a menu in the UI.\n- ConditionType: \"Menu\"\n- MenuConditionType: Existence, enabled, or marked state\n- MenuTitle: Title of the menu\n- MenuConditionSelectionType: How to match (is, contains, matches, path, shortcut)\n- MenuShortcut: Optional shortcut string\n- MenuModifiers: Optional modifier bitmask",
+      "properties": {
+        "ConditionType": {
+          "const": "Menu",
+          "type": "string"
+        },
+        "MenuConditionSelectionType": {
+          "enum": [
+            "Contains",
+            "Is",
+            "Matches",
+            "Path",
+            "Shortcut"
+          ],
+          "type": "string"
+        },
+        "MenuConditionType": {
+          "enum": [
+            "DoesNotExist",
+            "Exists",
+            "ExistsButIsNotEnabled",
+            "ExistsButIsNotMarked",
+            "IsEnabled",
+            "IsMarked",
+            "IsNotEnabled",
+            "IsNotMarked"
+          ],
+          "type": "string"
+        },
+        "MenuModifiers": {
+          "type": "number"
+        },
+        "MenuShortcut": {
+          "type": "string"
+        },
+        "MenuTitle": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "MenuConditionSelectionType",
+        "MenuConditionType",
+        "MenuTitle"
+      ],
+      "type": "object"
+    },
+    "ModifiersCondition": {
+      "additionalProperties": false,
+      "description": "Condition for checking the state of keyboard modifiers.\n- ConditionType: \"Modifiers\"\n- ModifiersDown: Bitmask of modifiers currently down\n- ModifiersUp: Bitmask of modifiers currently up",
+      "properties": {
+        "ConditionType": {
+          "const": "Modifiers",
+          "type": "string"
+        },
+        "ModifiersDown": {
+          "type": "number"
+        },
+        "ModifiersUp": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "ModifiersDown",
+        "ModifiersUp"
+      ],
+      "type": "object"
+    },
+    "MountedVolumeCondition": {
+      "additionalProperties": false,
+      "description": "Condition for checking the state of a mounted disk/volume.\n- ConditionType: \"Disk\"\n- DiskConditionType: Existence of disk\n- DiskTitle: Title of the disk\n- DiskConditionSelectionType: How to match the disk (is, contains, matches)",
+      "properties": {
+        "ConditionType": {
+          "const": "Disk",
+          "type": "string"
+        },
+        "DiskConditionSelectionType": {
+          "enum": [
+            "Contains",
+            "Is",
+            "Matches"
+          ],
+          "type": "string"
+        },
+        "DiskConditionType": {
+          "enum": [
+            "DoesNotExist",
+            "Exists"
+          ],
+          "type": "string"
+        },
+        "DiskTitle": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "DiskConditionSelectionType",
+        "DiskConditionType",
+        "DiskTitle"
+      ],
+      "type": "object"
+    },
+    "MouseButtonCondition": {
+      "additionalProperties": false,
+      "description": "Condition for checking the state of a mouse button.\n- ConditionType: \"MouseButton\"\n- Button: Mouse button number (0 = left, 1 = right, etc)\n- Pressed: Optional, true if button is pressed",
+      "properties": {
+        "Button": {
+          "type": "number"
+        },
+        "ConditionType": {
+          "const": "MouseButton",
+          "type": "string"
+        },
+        "Pressed": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "Button",
+        "ConditionType"
+      ],
+      "type": "object"
+    },
+    "OCRCondition": {
+      "additionalProperties": false,
+      "description": "Condition for evaluating OCR (Optical Character Recognition) results.\n- ConditionType: \"OCR\"\n- OCRConditionType: Operator for comparison\n- ConditionResult: Optional result string\n- Language: Optional language code\n- ImageSource: Optional image source\n- ImageScreenArea: Optional screen area\n- ImagePath: Optional path to image file\n- ImageNamedClipboardName: Optional named clipboard\n- ImageNamedClipboardRedundandDisplayName: Optional redundant display name",
+      "properties": {
+        "ConditionResult": {
+          "type": "string"
+        },
+        "ConditionType": {
+          "const": "OCR",
+          "type": "string"
+        },
+        "ImageNamedClipboardName": {
+          "type": "string"
+        },
+        "ImageNamedClipboardRedundandDisplayName": {
+          "type": "string"
+        },
+        "ImagePath": {
+          "type": "string"
+        },
+        "ImageScreenArea": {
+          "$ref": "#/definitions/ScreenArea"
+        },
+        "ImageSource": {
+          "$ref": "#/definitions/ImageSource"
+        },
+        "Language": {
+          "type": "string"
+        },
+        "OCRConditionType": {
+          "$ref": "#/definitions/TextualConditionOperator"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "OCRConditionType"
+      ],
+      "type": "object"
+    },
+    "PathCondition": {
+      "additionalProperties": false,
+      "description": "Condition for evaluating the existence or type of a file or folder path.\n- ConditionType: \"Path\"\n- Path: Path to check\n- PathConditionType: What to check for (existence, file/folder, etc)",
+      "properties": {
+        "ConditionType": {
+          "const": "Path",
+          "type": "string"
+        },
+        "Path": {
+          "type": "string"
+        },
+        "PathConditionType": {
+          "enum": [
+            "FileDoesNotExists",
+            "FileExists",
+            "FolderDoesNotExists",
+            "FolderExists",
+            "NothingExists",
+            "SomethingExists"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "Path",
+        "PathConditionType"
+      ],
+      "type": "object"
+    },
+    "PixelCondition": {
+      "additionalProperties": false,
+      "description": "Condition for evaluating the color of a pixel at a given position.\n- ConditionType: \"Pixel\"\n- HorizontalPositionExpression: X coordinate expression\n- VerticalPositionExpression: Y coordinate expression\n- PixelConditionType: What to check for (color, brightness, etc)\n- PixelConditionTypeGood: Good values for comparison\n- Red, Green, Blue: Color values",
+      "properties": {
+        "Blue": {
+          "type": "number"
+        },
+        "ConditionType": {
+          "const": "Pixel",
+          "type": "string"
+        },
+        "Green": {
+          "type": "number"
+        },
+        "HorizontalPositionExpression": {
+          "type": "string"
+        },
+        "PixelConditionType": {
+          "enum": [
+            "Is",
+            "IsBrighter",
+            "IsDarker",
+            "IsLessBlue",
+            "IsLessBlueIsNot",
+            "IsLessGreen",
+            "IsLessRed",
+            "IsMoreBlue",
+            "IsMoreGreen",
+            "IsMoreRed",
+            "IsNot"
+          ],
+          "type": "string"
+        },
+        "PixelConditionTypeGood": {
+          "enum": [
+            "Is",
+            "IsBrighter",
+            "IsDarker",
+            "IsLessBlue",
+            "IsLessGreen",
+            "IsLessRed",
+            "IsMoreBlue",
+            "IsMoreGreen",
+            "IsMoreRed",
+            "IsNot"
+          ],
+          "type": "string"
+        },
+        "Red": {
+          "type": "number"
+        },
+        "VerticalPositionExpression": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "Blue",
+        "ConditionType",
+        "Green",
+        "HorizontalPositionExpression",
+        "PixelConditionType",
+        "PixelConditionTypeGood",
+        "Red",
+        "VerticalPositionExpression"
+      ],
+      "type": "object"
+    },
+    "ScreenArea": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "ScreenAll",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "ScreenMain",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "ScreenSecond",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "ScreenThird",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "ScreenInternal",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "ScreenExternal",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "ScreenFront",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "ScreenBack",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "ScreenBack2",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "ScreenMouse",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "index": {
+              "type": [
+                "string",
+                "number"
+              ]
+            },
+            "type": {
+              "const": "ScreenIndex",
+              "type": "string"
+            }
+          },
+          "required": [
+            "index",
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "WindowFront",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "type": {
+              "const": "WindowName",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "type": {
+              "const": "WindowNameContaining",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "type": {
+              "const": "WindowNameMatching",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "index": {
+              "type": [
+                "string",
+                "number"
+              ]
+            },
+            "type": {
+              "const": "WindowIndex",
+              "type": "string"
+            }
+          },
+          "required": [
+            "index",
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "height": {
+              "type": [
+                "string",
+                "number"
+              ]
+            },
+            "left": {
+              "type": [
+                "string",
+                "number"
+              ]
+            },
+            "top": {
+              "type": [
+                "string",
+                "number"
+              ]
+            },
+            "type": {
+              "const": "Area",
+              "type": "string"
+            },
+            "width": {
+              "type": [
+                "string",
+                "number"
+              ]
+            }
+          },
+          "required": [
+            "height",
+            "left",
+            "top",
+            "type",
+            "width"
+          ],
+          "type": "object"
+        }
+      ],
+      "description": "A discriminated union describing a screen, window, or rectangular area.\nUsed for targeting in image, click, and window actions."
+    },
+    "ScriptCondition": {
+      "additionalProperties": false,
+      "description": "Condition for evaluating the result of a script (AppleScript, Shell, JS, etc).\n- ConditionType: \"Script\"\n- ScriptConditionSourceType: Type of script source\n- ScriptConditionType: Operator for result\n- ScriptText: Optional script text\n- Path: Optional path to script file\n- ScriptTerminationStatus: Optional termination status\n- ScriptResult: Optional result string\n- UseModernSyntax: Optional flag for modern syntax\n- IncludedVariables: Optional list of included variables\n- includeAllVariables: Convenience flag to include all variables",
+      "properties": {
+        "ConditionType": {
+          "const": "Script",
+          "type": "string"
+        },
+        "IncludedVariables": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "Path": {
+          "type": "string"
+        },
+        "ScriptConditionSourceType": {
+          "enum": [
+            "AppleScriptFile",
+            "AppleScriptText",
+            "JavaScriptBrowserFile",
+            "JavaScriptBrowserText",
+            "JavaScriptFile",
+            "JavaScriptText",
+            "ShellScriptFile",
+            "ShellScriptText",
+            "SwiftScriptFile",
+            "SwiftScriptText"
+          ],
+          "type": "string"
+        },
+        "ScriptConditionType": {
+          "enum": [
+            "Contains",
+            "DoesNotContain",
+            "DoesNotMatch",
+            "EndsWith",
+            "Equal",
+            "GreaterThan",
+            "GreaterThanOrEqual",
+            "Is",
+            "IsAfter",
+            "IsBefore",
+            "IsEmpty",
+            "IsNot",
+            "IsNotEmpty",
+            "LessThan",
+            "LessThanOrEqual",
+            "Matches",
+            "NotEqual",
+            "ReturnsError",
+            "ReturnsStatus",
+            "ReturnsSuccess",
+            "StartsWith"
+          ],
+          "type": "string"
+        },
+        "ScriptResult": {
+          "type": "string"
+        },
+        "ScriptTerminationStatus": {
+          "type": "number"
+        },
+        "ScriptText": {
+          "type": "string"
+        },
+        "UseModernSyntax": {
+          "type": "boolean"
+        },
+        "includeAllVariables": {
+          "description": "Convenience flag: set to true to include *all* variables (serialises as [\"9999\"]).",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "ScriptConditionSourceType",
+        "ScriptConditionType"
+      ],
+      "type": "object"
+    },
+    "SpecificAppOptions": {
+      "additionalProperties": false,
+      "description": "Options to identify a specific application for targeting.\n- name: App name\n- bundleIdentifier: Bundle ID\n- path: File path\n- match: How to match (AppMatchType)\n- newFile: Optional new file path",
+      "properties": {
+        "bundleIdentifier": {
+          "type": "string"
+        },
+        "match": {
+          "$ref": "#/definitions/AppMatchType"
+        },
+        "name": {
+          "type": "string"
+        },
+        "newFile": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "StringConditionOperator": {
+      "description": "Common comparison operators for string-based conditions.\nUsed in Variable, Text, Clipboard, Environment Variable, etc.\n- \"IsEmpty\": True if the value is empty\n- \"IsNotEmpty\": True if the value is not empty\n- \"Is\": Exact match\n- \"IsNot\": Not an exact match\n- \"Contains\": Substring match\n- \"DoesNotContain\": Substring does not match\n- \"StartsWith\": Value starts with string\n- \"EndsWith\": Value ends with string\n- \"IsBefore\": Lexicographical comparison (before)\n- \"IsAfter\": Lexicographical comparison (after)\n- \"Matches\": Regular expression match\n- \"DoesNotMatch\": Regular expression does not match",
+      "enum": [
+        "Contains",
+        "DoesNotContain",
+        "DoesNotMatch",
+        "EndsWith",
+        "Is",
+        "IsAfter",
+        "IsBefore",
+        "IsEmpty",
+        "IsNot",
+        "IsNotEmpty",
+        "Matches",
+        "StartsWith"
+      ],
+      "type": "string"
+    },
+    "TextCondition": {
+      "additionalProperties": false,
+      "description": "Condition for evaluating a text value.\n- ConditionType: \"Text\"\n- Text: The text to evaluate\n- TextConditionType: Operator for comparison\n- TextValue: Value to compare against",
+      "properties": {
+        "ConditionType": {
+          "const": "Text",
+          "type": "string"
+        },
+        "Text": {
+          "type": "string"
+        },
+        "TextConditionType": {
+          "$ref": "#/definitions/TextualConditionOperator"
+        },
+        "TextValue": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "Text",
+        "TextConditionType",
+        "TextValue"
+      ],
+      "type": "object"
+    },
+    "TextualConditionOperator": {
+      "description": "Represents the full set of comparison operators applicable\nto text-based fields that can also be interpreted numerically.\nThis is a union of string and numeric operators.",
+      "enum": [
+        "Contains",
+        "DoesNotContain",
+        "DoesNotMatch",
+        "EndsWith",
+        "Equal",
+        "GreaterThan",
+        "GreaterThanOrEqual",
+        "Is",
+        "IsAfter",
+        "IsBefore",
+        "IsEmpty",
+        "IsNot",
+        "IsNotEmpty",
+        "LessThan",
+        "LessThanOrEqual",
+        "Matches",
+        "NotEqual",
+        "StartsWith"
+      ],
+      "type": "string"
+    },
+    "TypedStringCondition": {
+      "additionalProperties": false,
+      "description": "Condition for checking the state of a typed string.\n- ConditionType: \"TypedString\"\n- TrippedCaseBehaviour: Case behavior for the string",
+      "properties": {
+        "ConditionType": {
+          "const": "TypedString",
+          "type": "string"
+        },
+        "TrippedCaseBehaviour": {
+          "enum": [
+            "None",
+            "TitleCase",
+            "Uppercase"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "TrippedCaseBehaviour"
+      ],
+      "type": "object"
+    },
+    "USBDeviceCondition": {
+      "additionalProperties": false,
+      "description": "Condition for checking the state of a USB device.\n- ConditionType: \"USBDevice\"\n- USBDeviceConditionType: Existence of device\n- USBDeviceConditionName: Name of the device\n- USBDeviceConditionSelectionType: How to match the device (is, contains, matches)",
+      "properties": {
+        "ConditionType": {
+          "const": "USBDevice",
+          "type": "string"
+        },
+        "USBDeviceConditionName": {
+          "type": "string"
+        },
+        "USBDeviceConditionSelectionType": {
+          "enum": [
+            "Contains",
+            "Is",
+            "Matches"
+          ],
+          "type": "string"
+        },
+        "USBDeviceConditionType": {
+          "enum": [
+            "DoesNotExist",
+            "Exists"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "USBDeviceConditionName",
+        "USBDeviceConditionSelectionType",
+        "USBDeviceConditionType"
+      ],
+      "type": "object"
+    },
+    "VariableCondition": {
+      "additionalProperties": false,
+      "description": "Condition for evaluating a variable value.\n- ConditionType: \"Variable\"\n- Variable: Name of the variable\n- VariableConditionType: Operator for comparison\n- VariableValue: Value to compare against",
+      "properties": {
+        "ConditionType": {
+          "const": "Variable",
+          "type": "string"
+        },
+        "Variable": {
+          "type": "string"
+        },
+        "VariableConditionType": {
+          "$ref": "#/definitions/TextualConditionOperator"
+        },
+        "VariableValue": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "Variable",
+        "VariableConditionType",
+        "VariableValue"
+      ],
+      "type": "object"
+    },
+    "WirelessNetworkCondition": {
+      "additionalProperties": false,
+      "description": "Condition for checking the state of a wireless network.\n- ConditionType: \"WirelessNetwork\"\n- WirelessNetworkConditionType: Connection state\n- WirelessNetworkConditionName: Name of the network\n- WirelessNetworkMatchType: How to match the network (any, name, BSSID, etc)",
+      "properties": {
+        "ConditionType": {
+          "const": "WirelessNetwork",
+          "type": "string"
+        },
+        "WirelessNetworkConditionName": {
+          "type": "string"
+        },
+        "WirelessNetworkConditionType": {
+          "enum": [
+            "IsConnected",
+            "IsNotConnected"
+          ],
+          "type": "string"
+        },
+        "WirelessNetworkMatchType": {
+          "enum": [
+            "Any",
+            "BSSID",
+            "NameContains",
+            "NameIs",
+            "NameMatches"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "WirelessNetworkConditionName",
+        "WirelessNetworkConditionType",
+        "WirelessNetworkMatchType"
+      ],
+      "type": "object"
+    },
+    "MouseButton": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "description": "Mouse button names for click actions.\n- \"Left\": Left mouse button\n- \"Center\": Center mouse button\n- \"Right\": Right mouse button\n- \"Button4\"–\"Button6\": Extra buttons",
+      "enum": [
+        "Button4",
+        "Button5",
+        "Button6",
+        "Center",
+        "Left",
+        "Right"
+      ],
+      "type": "string"
+    }
+  },
+  "anyOf": [
+    {
+      "$ref": "#/definitions/MouseButtonCondition"
+    },
+    {
+      "$ref": "#/definitions/ModifiersCondition"
+    },
+    {
+      "$ref": "#/definitions/ActionResultCondition"
+    },
+    {
+      "$ref": "#/definitions/CalculationCondition"
+    },
+    {
+      "$ref": "#/definitions/ClipboardCondition"
+    },
+    {
+      "$ref": "#/definitions/EnvironmentVariableCondition"
+    },
+    {
+      "$ref": "#/definitions/TextCondition"
+    },
+    {
+      "$ref": "#/definitions/VariableCondition"
+    },
+    {
+      "$ref": "#/definitions/ButtonCondition"
+    },
+    {
+      "$ref": "#/definitions/MenuCondition"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "AnyWindowConditionType": {
+          "$ref": "#/definitions/StringConditionOperator"
+        },
+        "AnyWindowTitle": {
+          "type": "string"
+        },
+        "ConditionType": {
+          "const": "AnyWindow",
+          "description": "Front-Application variant",
+          "type": "string"
+        },
+        "IsFrontApplication": {
+          "const": true,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "AnyWindowConditionType",
+        "AnyWindowTitle",
+        "ConditionType",
+        "IsFrontApplication"
+      ],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "AnyWindowConditionType": {
+          "$ref": "#/definitions/StringConditionOperator"
+        },
+        "AnyWindowTitle": {
+          "type": "string"
+        },
+        "Application": {
+          "$ref": "#/definitions/SpecificAppOptions"
+        },
+        "ConditionType": {
+          "const": "AnyWindow",
+          "description": "Specific-Application variant",
+          "type": "string"
+        },
+        "IsFrontApplication": {
+          "const": false,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "AnyWindowConditionType",
+        "AnyWindowTitle",
+        "Application",
+        "ConditionType",
+        "IsFrontApplication"
+      ],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "ConditionType": {
+          "const": "FrontWindow",
+          "type": "string"
+        },
+        "FrontWindowConditionType": {
+          "enum": [
+            "DoesNotExist",
+            "Exists",
+            "ExistsButIsNotFullScreen",
+            "ExistsButTitleDoesNotContain",
+            "ExistsButTitleDoesNotMatch",
+            "ExistsButTitleIsNot",
+            "IsFullScreen",
+            "IsNotFullScreen",
+            "TitleContains",
+            "TitleDoesNotContain",
+            "TitleDoesNotMatch",
+            "TitleIs",
+            "TitleIsNot",
+            "TitleMatches"
+          ],
+          "type": "string"
+        },
+        "FrontWindowTitle": {
+          "type": "string"
+        },
+        "IsFrontApplication": {
+          "const": true,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "ConditionType",
+        "FrontWindowConditionType",
+        "IsFrontApplication"
+      ],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "Application": {
+          "$ref": "#/definitions/SpecificAppOptions"
+        },
+        "ConditionType": {
+          "const": "FrontWindow",
+          "type": "string"
+        },
+        "FrontWindowConditionType": {
+          "enum": [
+            "DoesNotExist",
+            "Exists",
+            "ExistsButIsNotFullScreen",
+            "ExistsButTitleDoesNotContain",
+            "ExistsButTitleDoesNotMatch",
+            "ExistsButTitleIsNot",
+            "IsFullScreen",
+            "IsNotFullScreen",
+            "TitleContains",
+            "TitleDoesNotContain",
+            "TitleDoesNotMatch",
+            "TitleIs",
+            "TitleIsNot",
+            "TitleMatches"
+          ],
+          "type": "string"
+        },
+        "FrontWindowTitle": {
+          "type": "string"
+        },
+        "IsFrontApplication": {
+          "const": false,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "Application",
+        "ConditionType",
+        "FrontWindowConditionType",
+        "IsFrontApplication"
+      ],
+      "type": "object"
+    },
+    {
+      "$ref": "#/definitions/KeyCondition"
+    },
+    {
+      "$ref": "#/definitions/MacroCondition"
+    },
+    {
+      "$ref": "#/definitions/ApplicationCondition"
+    },
+    {
+      "$ref": "#/definitions/MountedVolumeCondition"
+    },
+    {
+      "$ref": "#/definitions/USBDeviceCondition"
+    },
+    {
+      "$ref": "#/definitions/WirelessNetworkCondition"
+    },
+    {
+      "$ref": "#/definitions/LocationCondition"
+    },
+    {
+      "$ref": "#/definitions/TypedStringCondition"
+    },
+    {
+      "$ref": "#/definitions/FileAttributeCondition"
+    },
+    {
+      "$ref": "#/definitions/OCRCondition"
+    },
+    {
+      "$ref": "#/definitions/PathCondition"
+    },
+    {
+      "$ref": "#/definitions/PixelCondition"
+    },
+    {
+      "$ref": "#/definitions/ScriptCondition"
+    },
+    {
+      "$ref": "#/definitions/FoundImageCondition"
+    }
+  ]
+}

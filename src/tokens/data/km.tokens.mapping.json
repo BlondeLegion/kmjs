@@ -1,0 +1,832 @@
+[
+  {
+    "human": "A Random Unique ID",
+    "pascal": "ARandomUniqueID",
+    "token": "%RandomUUID%"
+  },
+  {
+    "human": "AddressBook Email",
+    "pascal": "AddressBookEmail",
+    "token": "%AddressBook%Email%"
+  },
+  {
+    "human": "AddressBook First Name",
+    "pascal": "AddressBookFirstName",
+    "token": "%AddressBook%First%"
+  },
+  {
+    "human": "AddressBook Last Name",
+    "pascal": "AddressBookLastName",
+    "token": "%AddressBook%Last%"
+  },
+  {
+    "human": "AddressBook Name",
+    "pascal": "AddressBookName",
+    "token": "%AddressBook%Name%"
+  },
+  {
+    "human": "AddressBook Nickname",
+    "pascal": "AddressBookNickname",
+    "token": "%AddressBook%Nickname%"
+  },
+  {
+    "human": "AddressBook Note",
+    "pascal": "AddressBookNote",
+    "token": "%AddressBook%Note%"
+  },
+  {
+    "human": "AddressBook Organization",
+    "pascal": "AddressBookOrganization",
+    "token": "%AddressBook%Organization%"
+  },
+  {
+    "human": "All Audio Input Devices",
+    "pascal": "AllAudioInputDevices",
+    "token": "%AudioInputDevices%"
+  },
+  {
+    "human": "All Audio Output Devices",
+    "pascal": "AllAudioOutputDevices",
+    "token": "%AudioOutputDevices%"
+  },
+  {
+    "human": "All Background Application Names",
+    "pascal": "AllBackgroundApplicationNames",
+    "token": "%Application%Background%"
+  },
+  {
+    "human": "All Foreground Application Names",
+    "pascal": "AllForegroundApplicationNames",
+    "token": "%Application%Foreground%"
+  },
+  {
+    "human": "All Running Application Names",
+    "pascal": "AllRunningApplicationNames",
+    "token": "%Application%All%"
+  },
+  {
+    "human": "All Screen Frames",
+    "pascal": "AllScreenFrames",
+    "token": "%Screen%All%"
+  },
+  {
+    "human": "All Window Names",
+    "pascal": "AllWindowNames",
+    "token": "%WindowName%All%"
+  },
+  {
+    "human": "Calculation",
+    "pascal": "Calculation",
+    "token": "%Calculate%1+2%"
+  },
+  {
+    "human": "Calculation with Result in Binary",
+    "pascal": "CalculationWithResultInBinary",
+    "token": "%Bin8%1+2%"
+  },
+  {
+    "human": "Calculation with Result in Decimal",
+    "pascal": "CalculationWithResultInDecimal",
+    "token": "%Dec2%1+2%"
+  },
+  {
+    "human": "Calculation with Result in Hex",
+    "pascal": "CalculationWithResultInHex",
+    "token": "%Hex2%1+2%"
+  },
+  {
+    "human": "Calculation with Result in Octal",
+    "pascal": "CalculationWithResultInOctal",
+    "token": "%Oct3%1+2%"
+  },
+  {
+    "human": "Comma-separated list of the current execution instances",
+    "pascal": "CommaSeparatedListOfTheCurrentExecutionInstances",
+    "token": "%ExecutingInstances%"
+  },
+  {
+    "human": "Comma-separated list of variables accessed by this macro",
+    "pascal": "CommaSeparatedListOfVariablesAccessedByThisMacro",
+    "token": "%AccessedVariables%"
+  },
+  {
+    "human": "Current Audio Input Device",
+    "pascal": "CurrentAudioInputDevice",
+    "token": "%AudioInputDevice%"
+  },
+  {
+    "human": "Current Audio Input Device UID",
+    "pascal": "CurrentAudioInputDeviceUID",
+    "token": "%AudioInputDeviceUID%"
+  },
+  {
+    "human": "Current Audio Output Device",
+    "pascal": "CurrentAudioOutputDevice",
+    "token": "%AudioOutputDevice%"
+  },
+  {
+    "human": "Current Audio Output Device UID",
+    "pascal": "CurrentAudioOutputDeviceUID",
+    "token": "%AudioOutputDeviceUID%"
+  },
+  {
+    "human": "Current Audio Sound Effects Device",
+    "pascal": "CurrentAudioSoundEffectsDevice",
+    "token": "%AudioSoundEffectsDevice%"
+  },
+  {
+    "human": "Current Audio Sound Effects Device UID",
+    "pascal": "CurrentAudioSoundEffectsDeviceUID",
+    "token": "%AudioSoundEffectsDeviceUID%"
+  },
+  {
+    "human": "Current Mouse Location",
+    "pascal": "CurrentMouseLocation",
+    "token": "%CurrentMouse%"
+  },
+  {
+    "human": "Current Track Album",
+    "pascal": "CurrentTrackAlbum",
+    "token": "%CurrentTrack%album%"
+  },
+  {
+    "human": "Current Track Artist",
+    "pascal": "CurrentTrackArtist",
+    "token": "%CurrentTrack%artist%"
+  },
+  {
+    "human": "Current Track Name",
+    "pascal": "CurrentTrackName",
+    "token": "%CurrentTrack%name%"
+  },
+  {
+    "human": "Current Track Rating",
+    "pascal": "CurrentTrackRating",
+    "token": "%CurrentTrack%ratingstars%"
+  },
+  {
+    "human": "Delete (Hide a Variable)",
+    "pascal": "Delete",
+    "token": "%Delete%"
+  },
+  {
+    "human": "Executing Macro",
+    "pascal": "ExecutingMacro",
+    "token": "%ExecutingMacro%"
+  },
+  {
+    "human": "Executing Macro Group",
+    "pascal": "ExecutingMacroGroup",
+    "token": "%ExecutingMacroGroup%"
+  },
+  {
+    "human": "Executing Macro Group UUID",
+    "pascal": "ExecutingMacroGroupUUID",
+    "token": "%ExecutingMacroGroupUUID%"
+  },
+  {
+    "human": "Executing Macro UUID",
+    "pascal": "ExecutingMacroUUID",
+    "token": "%ExecutingMacroUUID%"
+  },
+  {
+    "human": "Executing This Macro",
+    "pascal": "ExecutingThisMacro",
+    "token": "%ExecutingThisMacro%"
+  },
+  {
+    "human": "Executing This Macro Group",
+    "pascal": "ExecutingThisMacroGroup",
+    "token": "%ExecutingThisMacroGroup%"
+  },
+  {
+    "human": "Executing This Macro Group UUID",
+    "pascal": "ExecutingThisMacroGroupUUID",
+    "token": "%ExecutingThisMacroGroupUUID%"
+  },
+  {
+    "human": "Executing This Macro UUID",
+    "pascal": "ExecutingThisMacroUUID",
+    "token": "%ExecutingThisMacroUUID%"
+  },
+  {
+    "human": "Find Pasteboard",
+    "pascal": "FindPasteboard",
+    "token": "%FindPasteboard%"
+  },
+  {
+    "human": "Finder Insertion Location Path",
+    "pascal": "FinderInsertionLocationPath",
+    "token": "%FinderInsertionLocation%"
+  },
+  {
+    "human": "First Screen Frame",
+    "pascal": "FirstScreenFrame",
+    "token": "%Screen%1%"
+  },
+  {
+    "human": "Formatted (ICU) Date Time",
+    "pascal": "FormattedICUDateTime",
+    "token": "%ICUDateTime%EEE, MMM d, yyyy h:mm%"
+  },
+  {
+    "human": "Formatted (ICU) Date Time For",
+    "pascal": "FormattedICUDateTimeFor",
+    "token": "%ICUDateTimeFor%NOW()+20%EEE, MMM d, yyyy h:mm%"
+  },
+  {
+    "human": "Formatted (ICU) Date Time Minus",
+    "pascal": "FormattedICUDateTimeMinus",
+    "token": "%ICUDateTimeMinus%3*7%Days%EEE, MMM d, yyyy h:mm%"
+  },
+  {
+    "human": "Formatted (ICU) Date Time Plus",
+    "pascal": "FormattedICUDateTimePlus",
+    "token": "%ICUDateTimePlus%3*7%Days%EEE, MMM d, yyyy h:mm%"
+  },
+  {
+    "human": "Formatted Calculation",
+    "pascal": "FormattedCalculation",
+    "token": "%CalculateFormat%1+2%#,##0.00#%"
+  },
+  {
+    "human": "Front Application Bundle ID",
+    "pascal": "FrontApplicationBundleID",
+    "token": "%ApplicationBundleID%1%"
+  },
+  {
+    "human": "Front Application Long Version",
+    "pascal": "FrontApplicationLongVersion",
+    "token": "%ApplicationLongVersion%1%"
+  },
+  {
+    "human": "Front Application Name",
+    "pascal": "FrontApplicationName",
+    "token": "%Application%1%"
+  },
+  {
+    "human": "Front Application Path",
+    "pascal": "FrontApplicationPath",
+    "token": "%ApplicationPath%1%"
+  },
+  {
+    "human": "Front Application Version",
+    "pascal": "FrontApplicationVersion",
+    "token": "%ApplicationVersion%1%"
+  },
+  {
+    "human": "Front Browser Bundle ID",
+    "pascal": "FrontBrowserBundleID",
+    "token": "%FrontBrowserBundleID%"
+  },
+  {
+    "human": "Front Browser Document Title",
+    "pascal": "FrontBrowserDocumentTitle",
+    "token": "%FrontBrowserTitle%"
+  },
+  {
+    "human": "Front Browser Document URL",
+    "pascal": "FrontBrowserDocumentURL",
+    "token": "%FrontBrowserURL%"
+  },
+  {
+    "human": "Front Browser Field",
+    "pascal": "FrontBrowserField",
+    "token": "%FrontBrowserField%document.forms[0][0]%"
+  },
+  {
+    "human": "Front Browser JavaScript",
+    "pascal": "FrontBrowserJavaScript",
+    "token": "%FrontBrowserJavaScript%document.forms[0].innerHTML%"
+  },
+  {
+    "human": "Front Browser Long Version",
+    "pascal": "FrontBrowserLongVersion",
+    "token": "%FrontBrowserLongVersion%"
+  },
+  {
+    "human": "Front Browser Name",
+    "pascal": "FrontBrowserName",
+    "token": "%FrontBrowserName%"
+  },
+  {
+    "human": "Front Browser Path",
+    "pascal": "FrontBrowserPath",
+    "token": "%FrontBrowserPath%"
+  },
+  {
+    "human": "Front Browser Ready State",
+    "pascal": "FrontBrowserReadyState",
+    "token": "%FrontBrowserReadyState%"
+  },
+  {
+    "human": "Front Browser Version",
+    "pascal": "FrontBrowserVersion",
+    "token": "%FrontBrowserVersion%"
+  },
+  {
+    "human": "Front Browser Window Name",
+    "pascal": "FrontBrowserWindowName",
+    "token": "%FrontBrowserWindowName%"
+  },
+  {
+    "human": "Front Window Frame",
+    "pascal": "FrontWindowFrame",
+    "token": "%WindowFrame%1%"
+  },
+  {
+    "human": "Front Window Name",
+    "pascal": "FrontWindowName",
+    "token": "%WindowName%1%"
+  },
+  {
+    "human": "Front Window Position",
+    "pascal": "FrontWindowPosition",
+    "token": "%WindowPosition%1%"
+  },
+  {
+    "human": "Front Window Size",
+    "pascal": "FrontWindowSize",
+    "token": "%WindowSize%1%"
+  },
+  {
+    "human": "Google Chrome Bundle ID",
+    "pascal": "GoogleChromeBundleID",
+    "token": "%ChromeBundleID%"
+  },
+  {
+    "human": "Google Chrome Document Title",
+    "pascal": "GoogleChromeDocumentTitle",
+    "token": "%ChromeTitle%"
+  },
+  {
+    "human": "Google Chrome Document URL",
+    "pascal": "GoogleChromeDocumentURL",
+    "token": "%ChromeURL%"
+  },
+  {
+    "human": "Google Chrome Field",
+    "pascal": "GoogleChromeField",
+    "token": "%ChromeField%document.forms[0][0]%"
+  },
+  {
+    "human": "Google Chrome JavaScript",
+    "pascal": "GoogleChromeJavaScript",
+    "token": "%ChromeJavaScript%document.forms[0].innerHTML%"
+  },
+  {
+    "human": "Google Chrome Long Version",
+    "pascal": "GoogleChromeLongVersion",
+    "token": "%ChromeLongVersion%"
+  },
+  {
+    "human": "Google Chrome Name",
+    "pascal": "GoogleChromeName",
+    "token": "%ChromeName%"
+  },
+  {
+    "human": "Google Chrome Path",
+    "pascal": "GoogleChromePath",
+    "token": "%ChromePath%"
+  },
+  {
+    "human": "Google Chrome Ready State",
+    "pascal": "GoogleChromeReadyState",
+    "token": "%ChromeReadyState%"
+  },
+  {
+    "human": "Google Chrome Version",
+    "pascal": "GoogleChromeVersion",
+    "token": "%ChromeVersion%"
+  },
+  {
+    "human": "Google Chrome Window Name",
+    "pascal": "GoogleChromeWindowName",
+    "token": "%ChromeWindowName%"
+  },
+  {
+    "human": "ID of Last Keyboard Maestro Engine Window Opened by This Macro",
+    "pascal": "IDOfLastKeyboardMaestroEngineWindowOpenedByThisMacro",
+    "token": "%LastWindowID%"
+  },
+  {
+    "human": "ID of the Last Aborted Action",
+    "pascal": "IDOfTheLastAbortedAction",
+    "token": "%LastAbortedActionID%"
+  },
+  {
+    "human": "JSON From Dictionary",
+    "pascal": "JSONFromDictionary",
+    "token": "%JSONFromDictionary%DictionaryName%"
+  },
+  {
+    "human": "JSON From Variables",
+    "pascal": "JSONFromVariables",
+    "token": "%JSONFromVariables%Prefix%"
+  },
+  {
+    "human": "JSON Value",
+    "pascal": "JSONValue",
+    "token": "%JSONValue%VariableName.field(field)[1]%"
+  },
+  {
+    "human": "Keyboard Layout Input Source",
+    "pascal": "KeyboardLayoutInputSource",
+    "token": "%KeyboardLayout%"
+  },
+  {
+    "human": "Keyboard Maestro Long Version",
+    "pascal": "KeyboardMaestroLongVersion",
+    "token": "%KeyboardMaestroLongVersion%"
+  },
+  {
+    "human": "Keyboard Maestro Version",
+    "pascal": "KeyboardMaestroVersion",
+    "token": "%KeyboardMaestroVersion%"
+  },
+  {
+    "human": "Linefeed (\\n)",
+    "pascal": "Linefeed",
+    "token": "%LineFeed%"
+  },
+  {
+    "human": "Long Date",
+    "pascal": "LongDate",
+    "token": "%LongDate%"
+  },
+  {
+    "human": "Machine IP Address",
+    "pascal": "MachineIPAddress",
+    "token": "%MacIPAddress%"
+  },
+  {
+    "human": "Machine Name",
+    "pascal": "MachineName",
+    "token": "%MacName%"
+  },
+  {
+    "human": "Machine Unique ID",
+    "pascal": "MachineUniqueID",
+    "token": "%MacUUID%"
+  },
+  {
+    "human": "Macro Name for UUID",
+    "pascal": "MacroNameForUUID",
+    "token": "%MacroNameForUUID%UUID%"
+  },
+  {
+    "human": "Mail BCC Recipients",
+    "pascal": "MailBCCRecipients",
+    "token": "%MailBCCRecipients%"
+  },
+  {
+    "human": "Mail CC Recipients",
+    "pascal": "MailCCRecipients",
+    "token": "%MailCCRecipients%"
+  },
+  {
+    "human": "Mail Contents",
+    "pascal": "MailContents",
+    "token": "%MailContents%"
+  },
+  {
+    "human": "Mail Raw Source",
+    "pascal": "MailRawSource",
+    "token": "%MailRawSource%"
+  },
+  {
+    "human": "Mail Recipients",
+    "pascal": "MailRecipients",
+    "token": "%MailRecipients%"
+  },
+  {
+    "human": "Mail Reply To",
+    "pascal": "MailReplyTo",
+    "token": "%MailReplyTo%"
+  },
+  {
+    "human": "Mail Sender",
+    "pascal": "MailSender",
+    "token": "%MailSender%"
+  },
+  {
+    "human": "Mail Subject",
+    "pascal": "MailSubject",
+    "token": "%MailSubject%"
+  },
+  {
+    "human": "Mail To Recipients",
+    "pascal": "MailToRecipients",
+    "token": "%MailToRecipients%"
+  },
+  {
+    "human": "Main Screen Frame",
+    "pascal": "MainScreenFrame",
+    "token": "%Screen%Main%"
+  },
+  {
+    "human": "Main Screen Possible Resolutions (array of resolutions)",
+    "pascal": "MainScreenPossibleResolutions",
+    "token": "%ScreenResolutions%Main%"
+  },
+  {
+    "human": "Main Screen Resolution (width,height,pixelwidth,pixelheight,refresh)",
+    "pascal": "MainScreenResolution",
+    "token": "%ScreenResolution%Main%"
+  },
+  {
+    "human": "Main Screen Visible Frame",
+    "pascal": "MainScreenVisibleFrame",
+    "token": "%ScreenVisible%Main%"
+  },
+  {
+    "human": "Music Player State (stopped/playing/paused/fast forwarding/rewinding/not running)",
+    "pascal": "MusicPlayerState",
+    "token": "%MusicPlayerState%"
+  },
+  {
+    "human": "Named Clipboard",
+    "pascal": "NamedClipboard",
+    "token": "%NamedClipboard%A Named Clipboard%"
+  },
+  {
+    "human": "Named Clipboard Flavors",
+    "pascal": "NamedClipboardFlavors",
+    "token": "%NamedClipboardFlavors%A Named Clipboard%"
+  },
+  {
+    "human": "Network Location",
+    "pascal": "NetworkLocation",
+    "token": "%NetworkLocation%"
+  },
+  {
+    "human": "Number Date",
+    "pascal": "NumberDate",
+    "token": "%NumberDate%"
+  },
+  {
+    "human": "Opaque ID of the Current Execution Instance",
+    "pascal": "OpaqueIDOfTheCurrentExecutionInstance",
+    "token": "%ExecutingInstance%"
+  },
+  {
+    "human": "Option-Return (Insert Text by Typing Only)",
+    "pascal": "OptionReturn",
+    "token": "%OptionReturn%"
+  },
+  {
+    "human": "Past Clipboard",
+    "pascal": "PastClipboard",
+    "token": "%PastClipboard%1%"
+  },
+  {
+    "human": "Past Clipboard Flavors",
+    "pascal": "PastClipboardFlavors",
+    "token": "%PastClipboardFlavors%1%"
+  },
+  {
+    "human": "Position Cursor (Insert Text Only)",
+    "pascal": "PositionCursor",
+    "token": "%|%"
+  },
+  {
+    "human": "Previous Application Name",
+    "pascal": "PreviousApplicationName",
+    "token": "%Application%2%"
+  },
+  {
+    "human": "Prompt for Snippet Placeholder (Default from Variable)",
+    "pascal": "PromptForSnippetPlaceholderDefaultFromVariable",
+    "token": "%Ask20:VarName%"
+  },
+  {
+    "human": "Prompt for Snippet Placeholder (Default Text)",
+    "pascal": "PromptForSnippetPlaceholderDefaultText",
+    "token": "%Ask20:Default%"
+  },
+  {
+    "human": "Return (\\r)",
+    "pascal": "Return",
+    "token": "%Return%"
+  },
+  {
+    "human": "Safari Bundle ID",
+    "pascal": "SafariBundleID",
+    "token": "%SafariBundleID%"
+  },
+  {
+    "human": "Safari Document Title",
+    "pascal": "SafariDocumentTitle",
+    "token": "%SafariTitle%"
+  },
+  {
+    "human": "Safari Document URL",
+    "pascal": "SafariDocumentURL",
+    "token": "%SafariURL%"
+  },
+  {
+    "human": "Safari Field",
+    "pascal": "SafariField",
+    "token": "%SafariField%document.forms[0][0]%"
+  },
+  {
+    "human": "Safari JavaScript",
+    "pascal": "SafariJavaScript",
+    "token": "%SafariJavaScript%document.forms[0].innerHTML%"
+  },
+  {
+    "human": "Safari Long Version",
+    "pascal": "SafariLongVersion",
+    "token": "%SafariLongVersion%"
+  },
+  {
+    "human": "Safari Name",
+    "pascal": "SafariName",
+    "token": "%SafariName%"
+  },
+  {
+    "human": "Safari Path",
+    "pascal": "SafariPath",
+    "token": "%SafariPath%"
+  },
+  {
+    "human": "Safari Ready State",
+    "pascal": "SafariReadyState",
+    "token": "%SafariReadyState%"
+  },
+  {
+    "human": "Safari Version",
+    "pascal": "SafariVersion",
+    "token": "%SafariVersion%"
+  },
+  {
+    "human": "Safari Window Name",
+    "pascal": "SafariWindowName",
+    "token": "%SafariWindowName%"
+  },
+  {
+    "human": "Second Screen Frame",
+    "pascal": "SecondScreenFrame",
+    "token": "%Screen%2%"
+  },
+  {
+    "human": "Short Date",
+    "pascal": "ShortDate",
+    "token": "%ShortDate%"
+  },
+  {
+    "human": "Space",
+    "pascal": "Space",
+    "token": "%Space%"
+  },
+  {
+    "human": "Success Result of Last Action",
+    "pascal": "SuccessResultOfLastAction",
+    "token": "%ActionResult%"
+  },
+  {
+    "human": "System Clipboard",
+    "pascal": "SystemClipboard",
+    "token": "%SystemClipboard%"
+  },
+  {
+    "human": "System Clipboard Flavors",
+    "pascal": "SystemClipboardFlavors",
+    "token": "%SystemClipboardFlavors%"
+  },
+  {
+    "human": "System Long Version",
+    "pascal": "SystemLongVersion",
+    "token": "%SystemLongVersion%"
+  },
+  {
+    "human": "System Version",
+    "pascal": "SystemVersion",
+    "token": "%SystemVersion%"
+  },
+  {
+    "human": "System Volume",
+    "pascal": "SystemVolume",
+    "token": "%SystemVolume%"
+  },
+  {
+    "human": "Tab (\\t)",
+    "pascal": "Tab",
+    "token": "%Tab%"
+  },
+  {
+    "human": "The Last Alert Button Selected",
+    "pascal": "TheLastAlertButtonSelected",
+    "token": "%AlertButton%"
+  },
+  {
+    "human": "The Last Custom HTML Result",
+    "pascal": "TheLastCustomHTMLResult",
+    "token": "%HTMLResult%"
+  },
+  {
+    "human": "The Last Found Image",
+    "pascal": "TheLastFoundImage",
+    "token": "%FoundImage%"
+  },
+  {
+    "human": "The Last Prompt Button Selected",
+    "pascal": "TheLastPromptButtonSelected",
+    "token": "%PromptButton%"
+  },
+  {
+    "human": "The Macro Name of the Specified Instance",
+    "pascal": "TheMacroNameOfTheSpecifiedInstance",
+    "token": "%ExecutingInstanceName%"
+  },
+  {
+    "human": "The Modifiers Used When Completing a Prompt With List Action",
+    "pascal": "TheModifiersUsedWhenCompletingAPromptWithListAction",
+    "token": "%PromptWithListModifiers%"
+  },
+  {
+    "human": "The Path of the Front Window’s Document",
+    "pascal": "ThePathOfTheFrontWindowDocument",
+    "token": "%FrontDocumentPath%"
+  },
+  {
+    "human": "The Path of the Selected Finder Item",
+    "pascal": "ThePathOfTheSelectedFinderItem",
+    "token": "%FinderSelection%"
+  },
+  {
+    "human": "The Paths of the Selected Finder Items",
+    "pascal": "ThePathsOfTheSelectedFinderItems",
+    "token": "%FinderSelections%"
+  },
+  {
+    "human": "The Text Entered in a Paste by Name Action",
+    "pascal": "TheTextEnteredInAPasteByNameAction",
+    "token": "%PasteByNameText%"
+  },
+  {
+    "human": "The Text Entered in a Prompt With List Action",
+    "pascal": "TheTextEnteredInAPromptWithListAction",
+    "token": "%PromptWithListText%"
+  },
+  {
+    "human": "The Text Entered in a Select Menu by Name Action",
+    "pascal": "TheTextEnteredInASelectMenuByNameAction",
+    "token": "%SelectMenuByNameText%"
+  },
+  {
+    "human": "Time",
+    "pascal": "Time",
+    "token": "%ShortTime%"
+  },
+  {
+    "human": "Time With Seconds",
+    "pascal": "TimeWithSeconds",
+    "token": "%LongTime%"
+  },
+  {
+    "human": "Tripped Trigger Clipboard Flavors",
+    "pascal": "TrippedTriggerClipboardFlavors",
+    "token": "%TriggerClipboardFlavors%"
+  },
+  {
+    "human": "Tripped Trigger Clipboard Value",
+    "pascal": "TrippedTriggerClipboardValue",
+    "token": "%TriggerClipboard%"
+  },
+  {
+    "human": "Tripped Trigger Text",
+    "pascal": "TrippedTriggerText",
+    "token": "%Trigger%"
+  },
+  {
+    "human": "Tripped Trigger Type",
+    "pascal": "TrippedTriggerType",
+    "token": "%TriggerBase%"
+  },
+  {
+    "human": "Tripped Trigger Value",
+    "pascal": "TrippedTriggerValue",
+    "token": "%TriggerValue%"
+  },
+  {
+    "human": "User Home Directory",
+    "pascal": "UserHomeDirectory",
+    "token": "%UserHome%"
+  },
+  {
+    "human": "User Login ID",
+    "pascal": "UserLoginID",
+    "token": "%UserLoginID%"
+  },
+  {
+    "human": "User Name",
+    "pascal": "UserName",
+    "token": "%UserName%"
+  },
+  {
+    "human": "Wireless Network Name(s)",
+    "pascal": "WirelessNetworkNames",
+    "token": "%WirelessNetwork%"
+  }
+]

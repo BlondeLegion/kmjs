@@ -1,0 +1,18 @@
+{
+  "name": "kmjs-example-basic",
+  "version": "1.0.0",
+  "description": "Basic example of using kmjs in another project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "ts-node index.ts"
+  },
+  "dependencies": {
+    "kmjs": "link:../../"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.0.0"
+  }
+}

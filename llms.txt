@@ -1,0 +1,302 @@
+# kmjs v1.0.0 - TypeScript Keyboard Maestro Automation
+
+## Overview
+kmjs is a TypeScript toolkit for programmatic Keyboard Maestro automation. Create macros using code instead of the GUI with 30+ type-safe virtual actions.
+
+## Installation
+```bash
+yarn add kmjs
+# or
+npm install kmjs
+```
+
+## Basic Usage Patterns
+
+### Execute Immediately
+```typescript
+import { runVirtualMacro, createVirtualNotification } from 'kmjs';
+
+const actions = [
+  createVirtualNotification({ title: 'Hello', body: 'World' })
+];
+
+runVirtualMacro(actions, 'My Macro');
+```
+
+### Generate for Export/Development
+```typescript
+import { generateMacro, createVirtualNotification } from 'kmjs';
+
+const actions = [
+  createVirtualNotification({ title: 'Hello', body: 'World' })
+];
+
+// Generate raw XML
+const xml = generateMacro(actions);
+
+// Export to .kmmacros file
+generateMacro(actions, {
+  addPlistWrapping: true,
+  exportTarget: { filePath: './my-macro.kmmacros' },
+  macroName: 'Generated Macro'
+});
+
+// Import to KM group
+generateMacro(actions, {
+  exportTarget: { toKMGroup: 'Generated Macros' },
+  macroName: 'Auto Generated'
+});
+
+// Display in text window
+generateMacro(actions, {
+  exportTarget: { displayInTextWindow: true }
+});
+```
+
+## Complete Virtual Actions List
+
+### UI & Notifications
+- `createVirtualNotification({ title, subtitle?, body, sound?, titleTokenPreset?, subtitleTokenPreset?, bodyTokenPreset? })` - System notification. `title` and `body` are required. `subtitle` is optional. `sound` can be system sound name or custom file path. Token presets can override text with KM tokens
+- `createVirtualDisplayTextBriefly({ text, tokenPreset?, processingMode? })` - Display text briefly (notification-style). `tokenPreset` can override text with KM token, `processingMode` can be "TextTokensOnly"|"Nothing"
+- `createVirtualDisplayTextWindow({ text, tokenPreset?, processingMode?, includeStyledText?, rtfContent? })` - Display text in window with optional styling. Additional options for styled text with RTF content
+- `createVirtualShowStatusMenu({})` - Display the Keyboard Maestro status menu (takes no parameters)
+
+### Input Simulation
+- `createVirtualTypeKeystroke({ keystroke, pressAndHold?, pressAndRepeat?, holdTime? })` - Type text or simulate key combinations with advanced press options. `keystroke` can be a shortcut string (e.g., "Cmd+S"), mask→key map object, or keycode number. `pressAndHold` holds the key down (default: false). `pressAndRepeat` presses and repeats (default: false, cannot be combined with pressAndHold or holdTime). `holdTime` is duration to hold key in seconds (implies pressAndHold=true)
+- `createVirtualMoveAndClick({ horizontal?, vertical?, relative?, clickKind?, button?, mouseDrag?, dragTargetX?, dragTargetY?, restoreMouseLocation? })` - **Primary mouse control function for moving cursor, clicking, and dragging elements.** Essential for mouse automation workflows. `horizontal`/`vertical` are coordinates. `relative` can be "Screen"|"Window"|"Mouse"|"Absolute" (default: Window). `clickKind` can be "Click"|"DoubleClick"|"RightClick"|"Move" (default: Click) - use "Move" to position cursor without clicking. `mouseDrag` can be "None"|"Absolute"|"Relative" (default: None) - "Absolute" drags to specific coordinates, "Relative" drags by offset. `dragTargetX`/`dragTargetY` specify drag destination or offset.
+- `createVirtualClickAtFoundImage({ imageSource?, filePath?, horizontal?, vertical?, relative?, clickKind?, button?, mouseDrag?, dragTargetX?, dragTargetY?, fuzz?, waitForImage?, restoreMouseLocation? })` - **Advanced image-based mouse control that finds images first, then clicks/drags relative to them.** Perfect for UI elements that may move or change. `imageSource` can be "Image"|"File"|"NamedClipboard"|"Screen" (default: Image). `filePath` required when imageSource is "File". `relative` can be "Image"|"Window"|"Screen"|"Mouse"|"Absolute" (default: Image) - when "Image", finds image then acts relative to it. `mouseDrag` can be "None"|"Absolute"|"Relative" - "Absolute" drags from found image to specific coordinates, "Relative" drags by offset from found image position. `clickKind` can be "Click"|"DoubleClick"|"RightClick"|"Move"|"Release"
+- `createVirtualScrollWheelEvent({ scrollAmount, direction, stopOnFailure?, notifyOnFailure?, actionUID? })` - Generate scroll wheel events. `scrollAmount` is pixels/lines to scroll. `direction` can be "Up"|"Down"|"Left"|"Right". `stopOnFailure` aborts macro on failure. `notifyOnFailure` controls notifications. `actionUID` optionally overrides ActionUID for test parity
+- `createVirtualPressButton({ action, buttonName, waitForEnabledButton?, timeoutAborts?, notifyOnTimeout?, stopOnFailure?, notifyOnFailure? })` - Press UI buttons with various action types. `action` can be "PressButtonNamed"|"ShowMenuOfButtonNamed"|"DecrementSliderNamed"|"IncrementSliderNamed"|"CancelButtonNamed". `buttonName` is the name of the button/slider to interact with. `waitForEnabledButton` waits for button to be enabled. `timeoutAborts` and `notifyOnTimeout` control timeout behavior when waiting. `stopOnFailure` and `notifyOnFailure` control failure handling
+
+### System & Application Control
+- `createVirtualActivate({ target?, specific?, allWindows?, reopenWindows?, alreadyActivatedAction?, timeoutAborts? })` - Activate application (frontmost or specific) with advanced window handling. `target` can be "Front" or "Specific". When "Specific", use `specific` object with name/bundleIdentifier/path/match/newFile. `alreadyActivatedAction` controls behavior if already frontmost: "Normal"|"SwitchToLast"|"BringAllWindows"|"Reopen"|"Hide"|"HideOthers"|"Quit"
+- `createVirtualQuit({ variant?, target?, specific?, timeoutAborts? })` - Quit application with various quit variants. `variant` can be "Quit"|"QuitRelaunch"|"ForceQuit"|"ForceQuitRelaunch" (default: Quit). `target` can be "Front"|"Specific" (default: Front). `specific` provides app identification when targeting specific app. `timeoutAborts` controls macro abort on timeout (default: true)
+- `createVirtualShowSpecificApp({ target?, specific })` - Show a specific application with comprehensive targeting options. `target` can be "Front"|"Specific" (default: Specific). `specific` is an object with app identification options: name, bundleIdentifier, path, match ("Name"|"BundleID"|"Path"), newFile
+- `createVirtualSelectMenuItem({ menuPath, target?, specific?, stopOnFailure?, notifyOnFailure? })` - Select a menu item by full menu path (array of strings, e.g. `["File", "Export", "PDF"]`). Supports targeting the frontmost or a specific application. `stopOnFailure` and `notifyOnFailure` control macro abort/notification on failure (default: true).
+- `createVirtualManipulateWindow({ manipulation?, values?, moveAndResizePreset?, customValues?, windowTarget?, windowIdentifier?, windowIndex?, applicationTarget?, specificApplication?, stopOnFailure?, notifyOnFailure? })` - Window management with comprehensive targeting and manipulation options. `manipulation` is the type of window manipulation (default: Center). `values` for ScaleBy/ResizeBy/ResizeTo/MoveBy/MoveTo operations. `moveAndResizePreset` for MoveAndResize operations. `customValues` for custom positioning. `windowTarget` specifies which window (default: FrontWindow). `applicationTarget` specifies which app (default: Front)
+- `createVirtualGroup({ name, actions, timeOutAbortsMacro? })` - Group multiple actions together for visual structure and optional timeout-abort behavior. `actions` is an array of virtual actions. `timeOutAbortsMacro` (default: true) controls whether timeout aborts the macro.
+
+### Variables & Logic
+- `createVirtualSetVariable({ variable, text?, processingMode?, where?, presetMode?, scope? })` - Set KM variable with comprehensive options. `variable` is the variable name (required). `text` is the value to set. `processingMode` can be "TextTokensOnly"|"Nothing". `where` controls set/append/prepend behavior. `presetMode` can be 'delete', 'positionCursor', or any KM token key. `scope` can be "global"|"local"|"instance" (default: global) - convenience feature that prepends LOCAL/INSTANCE to variable name
+- `createVirtualSetVariableToCalculation({ variable, text, format?, stopOnFailure?, notifyOnFailure? })` - Set a variable to the result of a calculation. `text` is the calculation expression. `format` is an optional number format pattern. `stopOnFailure` and `notifyOnFailure` control macro abort/notification on failure (default: true).
+- `createVirtualUseVariable({ variable, action, stopOnFailure?, notifyOnFailure? })` - Use a variable to perform various system actions. `variable` is the variable name to use. `action` can be "SetMouse"|"SetWindowPosition"|"SetWindowSize"|"SetWindowFrame"|"SetWindowByName"|"SetWindowByNameContains"|"SetWindowByNameMatches"|"SetApplicationByName"|"SetApplicationByNameContains"|"SetApplicationByNameMatches"|"SetSystemVolume". `stopOnFailure` aborts macro on failure (default: false). `notifyOnFailure` controls notifications (default: true)
+- `createVirtualIf({ conditions, then, else?, match?, timeoutAborts? })` - Conditional execution. `conditions` is array of condition objects, `then` and `else` are action arrays, `match` can be "All"|"Any"|"None" (default: All), `timeoutAborts` controls macro abort on timeout (default: true)
+- `createVirtualSwitchCase({ source, cases, variable?, text?, textProcessingMode?, calculation?, environmentVariable?, path?, namedClipboard? })` - Switch statement with comprehensive source options. `source` can be "Clipboard"|"NamedClipboard"|"TriggerClipboard"|"Variable"|"Text"|"Calculation"|"EnvironmentVariable"|"File". `cases` is array of case objects with operator, testValue, and actions. Each case operator can be "IsEmpty"|"IsNotEmpty"|"Is"|"IsNot"|"Contains"|"DoesNotContain"|"StartsWith"|"EndsWith"|"IsBefore"|"IsAfter"|"Matches"|"DoesNotMatch"|"LessThan"|"LessThanOrEqual"|"Equal"|"GreaterThanOrEqual"|"GreaterThan"|"NotEqual"|"Otherwise"
+- `createVirtualWhile({ conditions, actions, match?, timeoutAborts?, notifyOnTimeout? })` - Execute actions repeatedly in a while loop based on specified conditions. `conditions` is array of condition objects to evaluate. `actions` is array of VirtualActions to execute while conditions are met. `match` can be "All"|"Any"|"None" (default: All) for how to evaluate conditions. `timeoutAborts` controls macro abort on nested timeout (default: true). `notifyOnTimeout` controls timeout notifications
+
+### Control Flow
+- `createVirtualPause({ time?, unit? })` - Wait/delay with configurable units. `time` is duration (default: 0.05 if omitted). `unit` can be "Hours"|"Minutes"|"Seconds"|"Hundredths" (default: Seconds). Cannot specify unit without time
+- `createVirtualReturn({ text, tokenPreset? })` - Return value from macro. `text` is the string to return (required). `tokenPreset` can override text with KM token
+- `createVirtualCancel({ cancelType, instance? })` - Cancel macro execution. `cancelType` options: "CancelAllMacros"|"CancelAllOtherMacros"|"CancelThisMacro"|"CancelJustThisMacro"|"CancelSpecificMacro"|"RetryThisLoop"|"ContinueLoop"|"BreakFromLoop". For "CancelSpecificMacro", provide `instance` with macro name or UUID
+- `createVirtualBreakFromLoop()` - Break from loop
+- `createVirtualContinueLoop()` - Continue loop
+- `createVirtualRetryThisLoop()` - Retry current loop
+- `createVirtualComment({ title, text, rtfContent? })` - Add a comment to the macro for documentation purposes. `title` is shown in the KM editor, `text` is the comment content, optional `rtfContent` for styled text formatting
+
+### Clipboard Operations
+- `createVirtualCopy({ notifyOnTimeout?, timeoutAborts? })` - Copy selection to clipboard with timeout options. `notifyOnTimeout` controls notification on timeout (default: true), `timeoutAborts` controls whether timeout aborts macro (default: true)
+- `createVirtualCut({ notifyOnTimeout?, timeoutAborts? })` - Cut selection to clipboard with timeout options. `notifyOnTimeout` controls notification on timeout (default: true), `timeoutAborts` controls whether timeout aborts macro (default: false)
+- `createVirtualPaste({ notifyOnTimeout?, timeoutAborts? })` - Paste from clipboard with timeout options. `notifyOnTimeout` controls notification on timeout (default: true), `timeoutAborts` controls whether timeout aborts macro (default: false)
+- `createVirtualSetClipboardToText({ text?, presetMode?, processingMode?, includeStyledText?, rtfContent?, destination?, stopOnFailure?, notifyOnFailure? })` - Set clipboard content with comprehensive options. `text` is the text to set. `presetMode` can be 'delete', 'positionCursor', or any KM token key. `processingMode` can be "TextTokensOnly"|"Nothing". `includeStyledText` enables styled text (default: false). `rtfContent` provides RTF for styling. `destination` can be undefined (system), 'TriggerClipboard', or named clipboard object. Failure handling options available
+
+### Text & File Operations
+- `createVirtualInsertText({ text, tokenPreset?, action?, processingMode?, includeStyledText?, rtfContent?, targetingType? })` - Insert text with various methods. `action` can be "ByTyping"|"ByPasting"|"ByPastingStyles"|"DisplayWindow"|"DisplayBriefly"|"DisplayLarge" (default: ByTyping). `tokenPreset` overrides text with KM token. `processingMode` can be "TextTokensOnly"|"Nothing". `includeStyledText` enables styled text for ByPastingStyles/DisplayWindow. `rtfContent` provides RTF for styling. `targetingType` can be "Front"
+- `createVirtualFile({ operation, source?, destination?, outputPath?, stopOnFailure?, notifyOnFailure? })` - File operations. `operation` can be "Reveal"|"CreateUnique"|"OnlyMove"|"OnlyRename"|"Move"|"Copy"|"Duplicate"|"Trash"|"Delete"|"RecursiveDelete". `source` is source path, `destination` required for move/copy operations, `outputPath` for CreateUnique, `stopOnFailure` aborts macro on failure (default: false), `notifyOnFailure` controls notifications (default: true)
+- `createVirtualOpen({ path, target?, specific?, stopOnFailure?, notifyOnFailure? })` - Open files, folders, or URLs. `path` is the file/folder/URL to open. `target` can be "Front"|"Specific" (default: Front). `specific` provides app identification when targeting specific app. `stopOnFailure` aborts macro on failure (default: true). `notifyOnFailure` controls notifications (default: true)
+- `createVirtualOpenURL({ url, target?, specific?, processingMode?, openInBackground?, stopOnFailure?, notifyOnFailure?, timeoutAborts?, notifyOnTimeout? })` - Open URLs with comprehensive options. `url` is the URL to open. `target` can be "Front"|"Specific" (default: Front). `specific` provides app identification. `processingMode` can be "TextTokensOnly"|"Nothing". `openInBackground` opens in background (default: false). Various failure/timeout handling options available
+- `createVirtualClearTypedStringBuffer()` - Clear typed string buffer
+
+### Media & Capture
+- `createVirtualScreenCapture({ screenArea?, destination?, alwaysNominalResolution?, stopOnFailure?, notifyOnFailure? })` - Take screenshots with comprehensive options. `screenArea` defines capture area. `destination` can be undefined (SystemClipboard), 'TriggerClipboard', or {name, uid?} for NamedClipboard. `alwaysNominalResolution` captures at nominal resolution (default: false). `stopOnFailure` aborts macro on failure (default: false). `notifyOnFailure` controls notifications (default: true)
+- `createVirtualPlaySound({ sound?, path?, asynchronously?, volume?, deviceID?, timeoutAborts? })` - Play system sounds or custom sound files. `sound` is built-in sound name (default: 'Tink'). `path` is full path to custom sound file (overrides sound). `asynchronously` plays async (default: true). `volume` is 0-100 (default: 75). `deviceID` is output device (default: 'SOUNDEFFECTS'). `timeoutAborts` controls macro abort on timeout (default: true)
+
+### Macro Generation
+- `generateMacro(actions, options?)` - Generate XML from virtual actions with flexible output options. `actions` is array of virtual actions (required). `options` object with: `addPlistWrapping?: boolean` (add plist wrapper for file/KM export), `exportTarget?: ExportTarget` (output options), `macroName?: string` (name for generated macro). ExportTarget options: `displayInTextWindow?: boolean` (show in KM text window), `filePath?: string` (export to .kmmacros file), `toKMGroup?: string` (import to KM macro group)
+- `runVirtualMacro(actions, name?, addReturnActionXML?, captureReturnValue?)` - Execute virtual actions immediately as ephemeral macro
+- `buildEphemeralMacroXml(actions, addReturnActionXML?)` - Generate raw XML for virtual actions
+
+## System Information
+
+### Tokens (for use in macro text)
+```typescript
+import { KM_TOKENS } from 'kmjs';
+`Current app: ${KM_TOKENS.FrontApplicationName}`
+`Time: ${KM_TOKENS.ICUDateTime}`
+`Mouse: ${KM_TOKENS.CurrentMouse}`
+`User: ${KM_TOKENS.UserName}`
+`Random ID: ${KM_TOKENS.ARandomUniqueID}`
+```
+
+### Query Functions (immediate values)
+```typescript
+import { 
+  getMousePosition, getFrontAppInfo, getFrontWindowInfo,
+  getSystemVolume, getScreenFrames, getRunningApps,
+  getNetworkInfo, getUserInfo, getSystemVersion,
+  getSystemClipboard, getPastClipboard, getFinderSelections,
+  getScreenResolution, getAudioDevices, getKeyboardLayout
+} from 'kmjs';
+
+// Mouse and UI
+const pos = getMousePosition(); // "1234,567" or getMousePosition(true) for [1234, 567]
+const app = getFrontAppInfo(); // { name: "Safari", bundleId: "com.apple.Safari", path: "..." }
+const window = getFrontWindowInfo(); // { name: "Downloads", frame: { x, y, width, height } }
+
+// System Info
+const volume = getSystemVolume(); // 0-100
+const screens = getScreenFrames(); // Array of screen frame objects
+const apps = getRunningApps(); // Array of running app names
+const network = getNetworkInfo(); // { location, wirelessNames, ipAddress }
+const user = getUserInfo(); // { name, loginId, home }
+const version = getSystemVersion(); // { short: "14.3", long: "macOS Sonoma 14.3" }
+
+// Files and Clipboard
+const clipboard = getSystemClipboard(); // Current clipboard text
+const pastClip = getPastClipboard(1); // Previous clipboard entry
+const selections = getFinderSelections(); // Array of selected file paths
+const resolution = getScreenResolution(); // Screen resolution info
+const audio = getAudioDevices(); // { input: {name, uid}, output: {name, uid}, effects: {name, uid} }
+const keyboard = getKeyboardLayout(); // Current keyboard layout information
+```
+
+### Utility Functions
+```typescript
+import { 
+  normalizeAppleScriptShortcut,
+  xmlToJson, jsonToXml, encodeTextForXml, encodeTextForJson,
+  encodeStyledTextData, decodeStyledTextData, generateBasicRtf, stripRtfToPlainText
+} from 'kmjs';
+
+// Keystroke normalization - convert various formats to AppleScript maps
+const shortcut1 = normalizeAppleScriptShortcut('Cmd+S');           // { 256: 1 }
+const shortcut2 = normalizeAppleScriptShortcut('a');               // { 0: 0 }
+const shortcut3 = normalizeAppleScriptShortcut('Space');           // { 0: 49 }
+const shortcut4 = normalizeAppleScriptShortcut(36);                // { 0: 36 } (Return key)
+const shortcut5 = normalizeAppleScriptShortcut('Cmd');             // { 256: null } (modifier-only)
+
+// Text processing (KMET utilities)
+const json = xmlToJson(kmXmlString);                               // Convert KM XML to JSON
+const xml = jsonToXml(jsonObject);                                 // Convert JSON back to XML
+const safeXml = encodeTextForXml('Text with <special> & chars');   // XML-safe encoding
+const safeJson = encodeTextForJson('Text with "quotes" & chars');  // JSON-safe encoding
+
+// StyledText (RTF) utilities
+const base64Data = encodeStyledTextData(rtfString);                // Encode RTF for KM
+const { rtf, text } = decodeStyledTextData(base64Data);            // Decode StyledText
+const basicRtf = generateBasicRtf('Hello World', { bold: true });  // Generate basic RTF
+const plainText = stripRtfToPlainText(rtfString);                  // Extract plain text
+```
+
+## Common Patterns
+
+### App Workflow
+```typescript
+const actions = [
+  createVirtualActivate({ application: "TextEdit" }),
+  createVirtualPause({ time: 0.5 }),
+  createVirtualTypeKeystroke({ keystroke: "Hello from automation!" }),
+  createVirtualTypeKeystroke({ keystroke: "Cmd+S" })
+];
+```
+
+### Mouse Operations and Dragging
+```typescript
+// Get current mouse position for reference
+const [currentX, currentY] = getMousePosition(true);
+
+// Basic clicking at screen coordinates
+createVirtualMoveAndClick({ 
+  horizontal: 400, 
+  vertical: 300, 
+  relative: "Screen" 
+})
+
+// Move cursor without clicking (positioning)
+createVirtualMoveAndClick({ 
+  horizontal: 100, 
+  vertical: 200, 
+  relative: "Screen",
+  clickKind: "Move"  // Just move, don't click
+})
+
+// Drag element from one location to another (absolute drag)
+createVirtualMoveAndClick({
+  horizontal: 100,        // Start position X
+  vertical: 100,          // Start position Y
+  relative: "Screen",
+  mouseDrag: "Absolute",  // Drag to absolute coordinates
+  dragTargetX: 300,       // End position X
+  dragTargetY: 400,       // End position Y
+  clickKind: "Click"
+})
+
+// Drag by relative offset (resize/move by amount)
+createVirtualMoveAndClick({
+  horizontal: 692,        // Start at window corner
+  vertical: 631,
+  relative: "Screen",
+  mouseDrag: "Relative",  // Drag by offset
+  dragTargetX: 50,        // Move 50px right
+  dragTargetY: 30,        // Move 30px down
+  clickKind: "Click"
+})
+
+// Multi-step drag: Position cursor, then drag from current position
+const actions = [
+  // Step 1: Move to starting position
+  createVirtualMoveAndClick({
+    horizontal: 681,
+    vertical: 622,
+    relative: "Screen",
+    clickKind: "Move"     // Just position cursor
+  }),
+  // Step 2: Drag from current mouse position
+  createVirtualMoveAndClick({
+    mouseDrag: "Relative",
+    relative: "Mouse",    // Start from current mouse position
+    horizontal: 0,        // No additional offset
+    vertical: 0,
+    dragTargetX: 12,      // Drag 12px right
+    dragTargetY: 11,      // Drag 11px down
+    clickKind: "Click"
+  })
+];
+
+// Image-based dragging (find image first, then drag)
+createVirtualClickAtFoundImage({
+  imageSource: "File",
+  filePath: "/path/to/draggable-item.png",
+  relative: "Image",      // Relative to found image
+  mouseDrag: "Absolute",  // Drag to absolute coordinates
+  dragTargetX: 500,       // Target screen X
+  dragTargetY: 300,       // Target screen Y
+  clickKind: "Click"
+})
+```
+
+### Conditional Logic
+```typescript
+createVirtualIf({
+  conditions: [{
+    ConditionType: "Variable",
+    Variable: "Status",
+    VariableConditionType: "Is",
+    VariableValue: "Ready"
+  }],
+  then: [createVirtualNotification({ title: "Ready!" })],
+  else: [createVirtualNotification({ title: "Not ready" })]
+})
+```
+
+## Critical Rules for LLMs
+1. Use createVirtual* or generateMacro functions to handle XML, never attempt to modify / create raw XML yourself
+2. Pass options as single object with exact TypeScript property names
+3. Import functions from 'kmjs'
+4. Use appropriate actions for tasks (typing vs clicking vs notifications)
+5. Combine actions in arrays for runVirtualMacro() or generateMacro()
+
+## Function Reference
+All functions are strongly typed. Use TypeScript autocompletion for exact parameter names and options.
+
+Repository: https://github.com/BlondeLegion/kmjs
+Documentation: See README.md and TypeScript definitions

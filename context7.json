@@ -1,0 +1,37 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "kmjs",
+  "description": "TypeScript toolkit for programmatic Keyboard Maestro automation with 30+ virtual actions, type safety, and ephemeral macro executio",
+  "folders": [
+    "src/virtual_actions",
+    "src/queries",
+    "src/tokens",
+    "src/utils",
+    "src"
+  ],
+  "excludeFolders": [
+    "tests",
+    "scripts",
+    "backup",
+    "coverage",
+    ".kiro",
+    "examples",
+    "node_modules"
+  ],
+  "excludeFiles": [
+    "CHANGELOG.md",
+    "LICENSE",
+    "PUBLISHING.md",
+    "rollup.config.js"
+  ],
+  "rules": [
+    "Always use createVirtual* functions instead of raw XML",
+    "Pass options as single object parameter with exact TypeScript property names",
+    "Import required functions from 'kmjs' package",
+    "Use runVirtualMacro(actions, 'MacroName') to execute action arrays",
+    "Use KM_TOKENS for dynamic system information in macro text",
+    "Use get* query functions for immediate system information (getMousePosition, getFrontAppInfo, etc.)",
+    "Choose appropriate actions: createVirtualTypeKeystroke for typing, createVirtualMoveAndClick for clicking, createVirtualNotification for alerts",
+    "30+ virtual actions available covering UI, input, apps, variables, logic, control flow, clipboard, files, and media"
+  ]
+}
